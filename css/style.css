@@ -1,0 +1,576 @@
+@import "https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;1,800;1,900&display=swap";
+
+/* CSS Variable*/
+
+:root {
+    --font-family: 'Montserrat',sans-serrif;
+    --color: #00FFCA ;
+    --title: linear-gradient(90deg, #816aff 0%, #6a9bff 35%, #6a9bff 66%, #816aff 100% );
+}
+
+/* General Styles*/
+
+html{
+    position:relative;
+    scroll-behavior: smooth;
+}
+
+
+body{
+    max-width: 1440px;
+    margin: auto;
+    overflow-y: auto;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    max-width: 1440px;
+    margin: auto;
+}
+
+/* Background image Styles*/
+
+#background{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background:linear-gradient(rgba(0,0,0,0.1),rgba(0,0,0,0.1)),url('../assets/images/background.jpg');
+    background-repeat: no-repeat;
+    height: 100vh;
+    background-size: cover;
+    background-position: center top;
+    height: auto;
+    z-index: -1;
+    max-width: 1440px;
+    margin: auto;
+}
+
+/* The header background Styles*/
+
+#nav-menu{
+    display: flex;
+    justify-content:space-around;
+    align-items: center;
+    height: 100px;
+    z-index: 0;
+    box-shadow: 0.1 0.5 10px #000000;
+    background: #0A4D68;
+    width: 100%;
+    max-width: 1440px;
+    margin: auto;
+    margin-top: 0px;
+    z-index: 5;
+}
+
+/* Logo Styles*/
+
+#nav-menu .logo{
+    margin-top: 20px;
+    margin-left:0px;
+    color: var(--color);  
+    font-weight: bold;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+/* Logo animation Styles*/
+
+.logo a img{
+    width: 70px;
+    height:70px;
+    -webkit-filter: brightness(150%);
+    animation: rotate 5s linear infinite;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Logo name Styles*/
+#nav-menu .logo-name{
+    margin-top: 10px;
+    width: 171px;
+    height:24px;
+    color: var(--color);
+    font-family: var(--font-family);
+    text-align: center;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 19.5px;
+    letter-spacing: 0.1em;
+}
+
+.navbar-list {
+    display: flex;
+    flex-direction: row;
+    margin-top: 39px;
+    align-items: center;
+    padding: 19px 10px 15px 11px;
+    list-style-type: none;
+}
+
+.navbar-list li a {
+    color: var(--color);
+    text-decoration: none;
+    margin-right: 15px;
+    width: 77px;
+    height: 29px;
+    text-align: center;
+    font-family: var(--font-family);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 19.5px;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+    letter-spacing: 0.1em;
+    position: relative;
+}
+
+.navbar-list li a::after{
+    content: '';
+    height: 3px;
+    width: 0%;
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    background-color: #05BFDB;
+    transition: 1s ease-in;
+}
+
+.navbar-list li a:hover::after{
+    width: 100%;
+}
+
+#header-right{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    float: right;
+    margin-top: 20px;
+}
+#header-right  .username-logo{
+    background-image: url('../assets/images/username_logo.svg');
+    width: 35px;
+    height: 35px;
+}
+
+/* Login button Styles*/
+
+.login{
+    width: 144px;
+    height: 40px;
+    margin-left: 31px;
+}
+
+/*  Common Style for all buttons*/
+button {
+    border-radius: 10px;
+    background: -moz-linear-gradient(180deg, #05BFDB 0%,#00FFCA 50%,#05BFDB 100%);
+    border: none;
+    font-family: var(--font-family);
+    color: #0A4D68;
+    text-align: center;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 19.5px;
+    letter-spacing: 0.1em;
+    line-height: normal;
+    cursor: pointer;
+    white-space: nowrap;
+    z-index: 0;
+    outline: none;
+    text-transform: uppercase;
+    transition: all 1.5s ease-in-out, background-color 0.5s ease-in-out ;
+    box-shadow: 0 0 4px 3px #00FFCA;  
+    width: 300px;
+    height:60px;
+}
+
+/*  Common style for all button hover*/
+
+button:hover{
+    animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse{
+    0%{
+        transform: scale(1);
+    }
+    100%{
+        transform: scale(1.1);
+    }
+}
+
+
+#skateboard-background-section{
+    display: grid;
+    z-index: 0;
+    width: 90.8%;
+    height: 600px;
+    margin-top: 64px;
+    border-radius: 15px;
+    background: rgba(0, 0, 0, 0.6);
+    grid-template-areas: ". skate ." ". title ." ". subtitle ." ;
+    grid-template-rows: 240px 161px 186px;
+    grid-template-columns: 1fr 880px 1fr;
+    box-shadow: 0 0 4px 3px #00FFCA; 
+    text-align: center;
+    justify-items: center;
+}
+
+#skateboard-background-section h1{
+    margin-top: 90px;
+    max-width: 884px;
+    max-height:auto;
+    font-family: var(--font-family);
+    font-size: 40px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: normal;
+    background: var(--title);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-stroke: 0.1em transparent;
+    background-clip: text;
+    text-transform: uppercase;
+    grid-area: skate;
+    
+}
+
+#skateboard-background-section p{
+    max-width: 556px;
+    max-height: 53px;
+    color: var(--color);    
+    text-align: center;
+    font-family: var(--font-family);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-top: 0px;
+    text-transform: capitalize;
+    grid-area: title;
+}
+
+.learn-more-button{
+    grid-area:  subtitle;
+}
+
+#sub-hero-section{
+    margin-top: 270px;
+    display: grid;
+    width: 90.8%;
+    height: auto;
+}
+.skate-rush-description{
+    display: grid;
+    width: 100%;
+    grid-template-areas: "image . container" ;
+    grid-template-rows: 460px;
+    grid-template-columns: 1fr 25px 1fr;
+}
+
+.skate-rush-explore{
+    margin-top: 150px;
+    display: grid;
+    width: 100%;
+    grid-template-areas: "container . image" ;
+    grid-template-rows: 460px;
+    grid-template-columns: 1fr 111px 1fr;
+    margin-left: 4.2%;
+}
+
+.skate-rush-description img, .skate-rush-explore img{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    grid-area: image;
+    max-width: 100%; 
+    max-height:451px;
+    -webkit-filter: brightness(95%) ;
+    -webkit-transition: all 2s ease-in-out;
+    border-radius: 40px;
+}
+
+.skate-rush-description img:hover, .skate-rush-explore img:hover{
+    -webkit-filter: brightness(150%);
+    box-shadow: 0 0 10px 4px #0ef;
+}
+
+
+.description-container, .explore-container{
+    grid-area: container;
+    background: rgba(0, 0, 0, 0.6);
+    display: grid;
+    grid-template-areas: ". skate-title ." "para para para" ". button ." ;
+    grid-template-rows: 125px 230px auto;
+    grid-template-columns: auto auto auto;
+    justify-items: center;
+    border-radius: 15px;
+    box-shadow: 0 0 4px 3px #00FFCA; 
+    max-height: 440px;
+    margin-top: 5px;
+}
+
+.description-container h2, .explore-container h2{
+    font-family: var(--font-family);
+    font-style: normal;
+    font-weight: bold;
+    font-size: 32px;
+    line-height: normal;
+    background: var(--title);
+    grid-area: skate-title;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-stroke: 0.1em transparent;
+    background-clip: text;
+    text-transform: uppercase;
+    text-align: center;
+
+}
+
+.description-container p, .explore-container p{
+    color: var(--color);    
+    text-align: center;
+    font-family: var(--font-family);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    grid-area: para;
+}
+
+.description-container .game-button, .explore-container .game-button{
+    grid-area: button;
+}
+
+footer{
+    background-color: #0A4D68;
+    height: auto;
+    width: 100%;
+    max-width: 1440px;
+    margin-top: 200px;
+    margin-bottom: 5%;
+    font-family: var(--font-family);
+    color: var(--color);   
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 19.5px;
+    letter-spacing: 0.1em;
+}
+
+#footer-left {
+    margin-left: 3.12%;
+
+}
+
+#footer-left .footer-logo >img {
+    margin-top: 20px;
+    margin-left:0px;
+    color: var(--color);  
+    font-weight: bold;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 70px;
+    height:70px;
+    -webkit-filter: brightness(150%);
+}
+#footer-left .footer-logo p {
+    margin-bottom: 50px;
+    text-transform: capitalize;
+}
+
+.email{
+margin: 30px 0px 30px 5px
+}
+
+.bottom p{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    margin-bottom: 0px;
+    height: 60px;
+    
+}
+
+#footer-left .email > img {
+    width: 35px;
+    height:35px;
+}
+    
+
+
+
+
+/* ===BEGIN_login.html styles=== */
+
+
+/*  wrapper for form*/
+.wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+/* form style*/
+#form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform-style: preserve-3d;
+    transition: all ease-in-out;
+    box-shadow: 0 0 6px 6px #00FFCA; 
+    width: 819px;
+    /* height: 991px; */
+    height:auto;
+    margin: auto;
+    margin-top: 168px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 15px;
+    padding: 0px 77px 49px 96px;
+}
+
+/* form  label styles*/
+
+#form .label-one, #form .label-two {
+    height: 80px;
+    width: 78.8%;
+    border: none;
+    border-radius: 7px;
+    background-color: #088395;
+    display: flex;
+    align-items: center;
+    box-shadow: 6px 6px  rgba(0, 0, 0, 1), 2px 15px 20px rgba(0, 255, 202);
+}
+
+#form .label-one{
+    margin-top: 132px;
+}
+
+#form .label-two{
+    margin-top: 100px;
+}
+
+.label-one img, .label-two img{
+    margin-left: 32px;
+}
+
+.label-one .input, .label-two .input{
+    margin: 22px 32px 16px 32px;
+    width: 100%;
+    background-color: #088395;
+    border-radius: 7px;
+    border: none;
+    height:42px;
+}
+
+
+/* Input styles*/
+.input{
+    color:#00FFCA;
+    font-family: var(--font-family);
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.input::placeholder{
+    color:#00FFCA
+}
+
+.input:focus::placeholder{
+    transition: 0.5s;
+    opacity:0;
+}
+
+.input:focus{
+    transform: scale(1.06);
+}
+
+/* form welcome text style for login page */
+#form p {
+    margin-top: 69px;
+    width: auto;
+    height: 122px;
+    text-align: center;
+    font-family: var(--font-family);
+    font-size: 40px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: normal;
+    background: var(--title);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-stroke: 0.1em transparent;
+    background-clip: text;
+    text-transform: uppercase;
+}
+
+/* Button style for login page */
+
+.login-page-button{
+    margin-top: 211px;
+}
+
+/* form link style login page */
+.form_links{
+    margin-top: 35px;
+  
+}
+
+.form_links {
+    display: flex;
+    justify-content: center;
+    margin-top: 35px;
+    
+  }
+#form .form_links p {
+    color:#05BFDB;
+    margin: 0 5px;
+    text-align: center;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal; 
+    text-transform: lowercase;
+}
+
+#form .form_links p::first-letter, .form_links p a::first-letter{
+    text-transform: capitalize;
+}
+  
+.form_links p a{
+    display: inline-block;
+    color: #0ef;
+    text-decoration: none;
+    font-weight: 600;
+    text-decoration: underline;
+    }
+  
+.form_links p a:hover{
+    color: #00FFCA;
+}
+
+
+  
+
+
+
+/* ===END_login.html styles=== */
