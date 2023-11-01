@@ -321,6 +321,7 @@ button:hover{
     box-shadow: 0 0 4px 3px #00FFCA; 
     max-height: 440px;
     margin-top: 5px;
+    text-align: center;
 }
 
 .description-container h2, .explore-container h2{
@@ -349,9 +350,11 @@ button:hover{
     font-weight: 400;
     line-height: normal;
     grid-area: para;
+    margin: 0px 5px 0px 5px;
 }
 
-.description-container .game-button, .explore-container .game-button{
+.description-container .game-button,
+.explore-container .game-button{
     grid-area: button;
 }
 
@@ -361,7 +364,7 @@ footer{
     width: 100%;
     max-width: 1440px;
     margin-top: 200px;
-    margin-bottom: 5%;
+    margin-bottom: 3.5%;
     font-family: var(--font-family);
     color: var(--color);   
     font-size: 16px;
@@ -393,9 +396,6 @@ footer{
     text-transform: capitalize;
 }
 
-.email{
-margin: 30px 0px 30px 5px
-}
 
 .bottom p{
     display: flex;
@@ -408,27 +408,21 @@ margin: 30px 0px 30px 5px
     
 }
 
-#footer-left .email > img {
-    width: 35px;
-    height:35px;
-}
-    
-
-
 
 
 /* ===BEGIN_login.html styles=== */
 
 
-/*  wrapper for form*/
+/* Common wrapper style for login page, register page , setting page and leaderboard page */
 .wrapper{
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
 
 }
 
-/* form style*/
+/* Common style  which is used for login page, register page and setting page*/
 #form{
     display: flex;
     flex-direction: column;
@@ -436,8 +430,7 @@ margin: 30px 0px 30px 5px
     transform-style: preserve-3d;
     transition: all ease-in-out;
     box-shadow: 0 0 6px 6px #00FFCA; 
-    width: 819px;
-    /* height: 991px; */
+    width:56.87%;
     height:auto;
     margin: auto;
     margin-top: 168px;
@@ -448,7 +441,7 @@ margin: 30px 0px 30px 5px
 
 /* form  label styles*/
 
-#form .label-one, #form .label-two {
+#form label {
     height: 80px;
     width: 78.8%;
     border: none;
@@ -460,7 +453,7 @@ margin: 30px 0px 30px 5px
 }
 
 #form .label-one{
-    margin-top: 132px;
+    margin-top: 30px;
 }
 
 #form .label-two{
@@ -471,7 +464,15 @@ margin: 30px 0px 30px 5px
     margin-left: 32px;
 }
 
-.label-one .input, .label-two .input{
+
+/* Common Input styles for login page, register page and setting page*/
+#form .input{
+    color:#00FFCA;
+    font-family: var(--font-family);
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
     margin: 22px 32px 16px 32px;
     width: 100%;
     background-color: #088395;
@@ -480,32 +481,22 @@ margin: 30px 0px 30px 5px
     height:42px;
 }
 
-
-/* Input styles*/
-.input{
-    color:#00FFCA;
-    font-family: var(--font-family);
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-}
-
-.input::placeholder{
+#form .input::placeholder{
     color:#00FFCA
 }
 
-.input:focus::placeholder{
+#form .input:focus::placeholder{
     transition: 0.5s;
     opacity:0;
 }
 
-.input:focus{
+#form .input:focus{
     transform: scale(1.06);
 }
 
-/* form welcome text style for login page */
-#form p {
+/* Common title text style for login page, register page , setting page and leaderboard page */
+#form p, 
+.table-container p {
     margin-top: 69px;
     width: auto;
     height: 122px;
@@ -526,33 +517,33 @@ margin: 30px 0px 30px 5px
 /* Button style for login page */
 
 .login-page-button{
-    margin-top: 211px;
+    margin-top: 100px;
 }
 
 /* form link style login page */
 .form_links{
     margin-top: 35px;
-  
 }
 
 .form_links {
     display: flex;
     justify-content: center;
     margin-top: 35px;
-    
-  }
+}
+
 #form .form_links p {
     color:#05BFDB;
     margin: 0 5px;
     text-align: center;
-    font-size: 20px;
+    font-size: 18px;
     font-style: normal;
     font-weight: 400;
     line-height: normal; 
     text-transform: lowercase;
 }
 
-#form .form_links p::first-letter, .form_links p a::first-letter{
+#form .form_links p::first-letter, 
+#form .form_links p a::first-letter{
     text-transform: capitalize;
 }
   
@@ -568,9 +559,100 @@ margin: 30px 0px 30px 5px
     color: #00FFCA;
 }
 
-
-  
-
-
-
 /* ===END_login.html styles=== */
+
+
+
+
+/* ===BEGIN_setting.html additional styles=== */
+#form .current{
+    margin-top: 25px;
+    text-transform: capitalize;
+}
+
+#form .new, #form .change  {
+    margin-top: 100px;
+    text-transform: capitalize;
+}
+
+#form .strong-password {
+    color:#05BFDB;
+    margin-top: 100px;
+    text-align: center;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal; 
+    text-transform: lowercase;
+}
+
+#form .strong-password::first-letter{
+    text-transform: capitalize;
+}
+
+#form .save{
+    margin-top: -70px;
+}
+/* ===END_setting.html additional styles=== */
+
+
+
+/* ===BEGIN_leaderboard.html styles=== */
+.table-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width:70%;
+    height:auto;
+    margin: auto;
+    margin-top: 168px;
+    background: rgba(0, 0, 0, 0.7);
+    padding-bottom: 100px;
+    border-radius: 15px;
+    box-shadow: 0 0 6px 6px #00FFCA; 
+
+}
+table{
+    overflow-x: auto;
+    border-collapse: separate; 
+    border-spacing: 0px 7px;
+    width:90%;
+    text-align: center;
+    margin-top: 0px;
+}
+
+th, 
+td{
+    color:#00FFCA;
+    text-align: center;
+    font-family: var(--font-family);
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    border: 1.5px solid black; 
+
+}
+
+th{
+    background-color: #0A4D68; 
+}
+
+
+tr{
+    background-color: #088395;
+    height: 80px;
+}
+
+tr:nth-child(even){
+    background-color: #05BFDB;
+}
+
+tr:hover{
+    transform: scale(1.05);
+    transition: all ease-out 1s ;
+}
+
+
+/* ===END_leaderboard.html styles=== */
+
