@@ -223,7 +223,7 @@ button:hover{
     background: rgba(0, 0, 0, 0.6);
     grid-template-areas: ". skate ." ". title ." ". subtitle ." ;
     grid-template-rows: 240px 161px 186px;
-    grid-template-columns: 1fr 880px 1fr;
+    grid-template-columns: auto 880px auto;
     box-shadow: 0 0 4px 3px #00FFCA; 
     text-align: center;
     justify-items: center;
@@ -245,7 +245,34 @@ button:hover{
     background-clip: text;
     text-transform: uppercase;
     grid-area: skate;
+    animation: colorChange 1s linear infinite;
+  
     
+}
+
+@keyframes colorChange {
+    0% {
+        background: var(--title);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-stroke: 0.1em transparent;
+        background-clip: text;
+    }
+    50% {
+        background: linear-gradient(90deg, #816aff 0%, #816aff 35%, #6a9bff 66%, #6a9bff 100% );
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-stroke: 0.1em transparent;
+        background-clip: text;
+    }
+
+    100% {
+        background: linear-gradient(90deg, #6a9bff  0%, #816aff 35%, #816aff 66%, #6a9bff 100% );
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-stroke: 0.1em transparent;
+        background-clip: text;
+    }
 }
 
 #skateboard-background-section p{
@@ -305,7 +332,7 @@ button:hover{
 }
 
 .skate-rush-description img:hover,
- .skate-rush-explore img:hover{
+.skate-rush-explore img:hover{
     -webkit-filter: brightness(150%);
     box-shadow: 0 0 10px 4px #0ef;
 }
@@ -415,18 +442,12 @@ footer{
     
 }
 
-
-
-
-
-
 /* Common wrapper style for login page, register page , setting page and leaderboard page */
 .wrapper{
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-
 }
 
 /* Common style  which is used for login page, register page and setting page*/
@@ -434,8 +455,6 @@ footer{
     display: flex;
     flex-direction: column;
     align-items: center;
-    transform-style: preserve-3d;
-    transition: all ease-in-out;
     box-shadow: 0 0 6px 6px #00FFCA; 
     width:56.87%;
     height:auto;
@@ -508,8 +527,11 @@ footer{
     transform: scale(1.06);
 }
 
-/* Common title text style for login page, register page , setting page and leaderboard page */
-#form p, 
+/* Common title text style for login page, register page , setting page, support page and leaderboard page */
+#form p,
+#help-section h1,
+.easy-mode h2,
+.hard-mode h2,
 .table-container p {
     margin-top: 69px;
     width: auto;
@@ -607,6 +629,7 @@ footer{
 #form .cancel{
     margin-top: 20px;
 }
+
 /* ===END_setting.html additional styles=== */
 
 
@@ -671,4 +694,105 @@ tr:hover{
 /* ===END_leaderboard.html styles=== */
 
 
+/* ===BEGIN_support.html styles=== */
+#help-section{
+    display: grid;
+    align-items: center;
+    box-shadow: 0 0 6px 6px #00FFCA; 
+    width:83.61%;
+    height:auto;
+    margin-top: 168px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 15px;
+    grid-template-areas: ". ." "play play" "robot easy" "para hard" ;
+    grid-template-rows: 69px 80px 520px 600px;
+    grid-template-columns: 548px 1fr;
+    column-gap: 10px;
+}
+
+#help-section h1{
+    text-align: center;
+    grid-area: play;
+    text-transform: uppercase;
+}
+
+#help-section .support-help-section >img{
+    grid-area: robot;
+    margin-top: 950px;
+    height: 451px;
+}
+
+#help-section .support-help-section p{
+    grid-area: para;
+    margin-top:57px;
+    color: #00FFCA;
+    font-family: var(--font-family);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-bottom: -350px;
+    padding: 0 60px;
+
+}
+
+.easy-mode{
+    grid-area: easy;
+    margin-top: 60px;
+}
+
+.hard-mode{
+    grid-area: hard;
+}
+
+.easy-mode,
+.hard-mode{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 20px;
+    background-color: rgba(8, 131, 149, 0.9);
+    border-radius: 15px;
+}
+
+.easy-mode h2, 
+.hard-mode h2{
+    font-size: 32px;
+    color:#000000
+}
+
+.easy-mode p,
+.hard-mode p {
+    color: #00FFCA;
+    text-align: center;
+    font-family: var(--font-family);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    padding: 40px 55px;
+}
+
+#mode-images{
+    display: flex;
+    margin-top: -40px;
+    width: 60%;
+}
+
+#mode-images-two{
+    display: flex;
+    margin-top: -120px;
+    width: 50%;
+}
+
+#mode-images img{
+    margin-right: 120px;
+}
+
+#mode-images-two img{
+    margin-right: 150px;
+    margin-top: 80px;
+}
+
+/* ===END_support.html styles=== */
 
