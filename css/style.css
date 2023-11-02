@@ -291,7 +291,8 @@ button:hover{
     margin-left: 4.2%;
 }
 
-.skate-rush-description img, .skate-rush-explore img{
+.skate-rush-description img,
+.skate-rush-explore img{
     display:flex;
     justify-content: center;
     align-items: center;
@@ -303,13 +304,15 @@ button:hover{
     border-radius: 40px;
 }
 
-.skate-rush-description img:hover, .skate-rush-explore img:hover{
+.skate-rush-description img:hover,
+ .skate-rush-explore img:hover{
     -webkit-filter: brightness(150%);
     box-shadow: 0 0 10px 4px #0ef;
 }
 
 
-.description-container, .explore-container{
+.description-container, 
+.explore-container{
     grid-area: container;
     background: rgba(0, 0, 0, 0.6);
     display: grid;
@@ -324,7 +327,8 @@ button:hover{
     text-align: center;
 }
 
-.description-container h2, .explore-container h2{
+.description-container h2, 
+.explore-container h2{
     font-family: var(--font-family);
     font-style: normal;
     font-weight: bold;
@@ -341,7 +345,8 @@ button:hover{
 
 }
 
-.description-container p, .explore-container p{
+.description-container p, 
+.explore-container p{
     color: var(--color);    
     text-align: center;
     font-family: var(--font-family);
@@ -358,6 +363,8 @@ button:hover{
     grid-area: button;
 }
 
+
+/* Common footer styles for all pages */
 footer{
     background-color: #0A4D68;
     height: auto;
@@ -410,7 +417,7 @@ footer{
 
 
 
-/* ===BEGIN_login.html styles=== */
+
 
 
 /* Common wrapper style for login page, register page , setting page and leaderboard page */
@@ -452,17 +459,23 @@ footer{
     box-shadow: 6px 6px  rgba(0, 0, 0, 1), 2px 15px 20px rgba(0, 255, 202);
 }
 
-#form .label-one{
-    margin-top: 30px;
-}
-
-#form .label-two{
-    margin-top: 100px;
-}
-
-.label-one img, .label-two img{
+#form label >img{
     margin-left: 32px;
 }
+
+
+#form label{
+    margin-top: 100px;
+
+}
+
+#form .label-one,
+#form .register-username,
+#form .current
+{
+    margin-top: 20px;
+}
+
 
 
 /* Common Input styles for login page, register page and setting page*/
@@ -482,7 +495,8 @@ footer{
 }
 
 #form .input::placeholder{
-    color:#00FFCA
+    color:#00FFCA;
+    text-transform: capitalize;
 }
 
 #form .input:focus::placeholder{
@@ -514,24 +528,29 @@ footer{
     text-transform: uppercase;
 }
 
-/* Button style for login page */
+/* ===BEGIN_login.html, register.html additional styles=== */
 
-.login-page-button{
+/* Button style for login page and register page */
+
+.login-page-button,
+.register-page-button
+{
     margin-top: 100px;
 }
 
 /* form link style login page */
-.form_links{
+
+.form-links{
     margin-top: 35px;
 }
 
-.form_links {
+.form-links {
     display: flex;
     justify-content: center;
     margin-top: 35px;
 }
 
-#form .form_links p {
+#form .form-links p {
     color:#05BFDB;
     margin: 0 5px;
     text-align: center;
@@ -542,12 +561,12 @@ footer{
     text-transform: lowercase;
 }
 
-#form .form_links p::first-letter, 
-#form .form_links p a::first-letter{
+#form .form-links p::first-letter, 
+#form .form-links p a::first-letter{
     text-transform: capitalize;
 }
   
-.form_links p a{
+.form-links p a{
     display: inline-block;
     color: #0ef;
     text-decoration: none;
@@ -555,25 +574,16 @@ footer{
     text-decoration: underline;
     }
   
-.form_links p a:hover{
+.form-links p a:hover{
     color: #00FFCA;
 }
 
-/* ===END_login.html styles=== */
 
-
+/* ===END_login.html,register.html additional styles=== */
 
 
 /* ===BEGIN_setting.html additional styles=== */
-#form .current{
-    margin-top: 25px;
-    text-transform: capitalize;
-}
 
-#form .new, #form .change  {
-    margin-top: 100px;
-    text-transform: capitalize;
-}
 
 #form .strong-password {
     color:#05BFDB;
@@ -592,6 +602,10 @@ footer{
 
 #form .save{
     margin-top: -70px;
+}
+
+#form .cancel{
+    margin-top: 20px;
 }
 /* ===END_setting.html additional styles=== */
 
@@ -612,6 +626,7 @@ footer{
     box-shadow: 0 0 6px 6px #00FFCA; 
 
 }
+/* styles for table and its data*/
 table{
     overflow-x: auto;
     border-collapse: separate; 
@@ -653,6 +668,7 @@ tr:hover{
     transition: all ease-out 1s ;
 }
 
-
 /* ===END_leaderboard.html styles=== */
+
+
 

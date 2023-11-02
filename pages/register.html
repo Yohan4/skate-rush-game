@@ -31,18 +31,31 @@
     </header>
     <div class="wrapper">
         <form id="form">
-            <p> Welcome Back !</p>
-            <label class="label-one">
+            <p> Register here !</p>
+            <label class="register-username">
                 <img src="../assets/images/username_logo.svg" alt="username-icon"/>
                 <input class="input" type="text" placeholder="Username" required> 
             </label>
             <label>
+                <img src="../assets/images/email_logo.png" alt="email-icon"/>
+                <input class="input" type="text" placeholder="Email" required> 
+            </label>
+            <label>
+                <img src="../assets/images/dob_logo.png" alt="calendar-icon"/>
+                <input id="dob" class="input" type="text" placeholder="Date of birth" onfocus="changePlaceholderType()" onblur="placeholder()" required> 
+            </label>
+
+            <label>
                 <img src="../assets/images/password_icon.svg" alt="password-logo"/>
                 <input class="input" type="text" placeholder="Password" required> 
             </label>
-            <button class="login-page-button">LOGIN</button>
+            <label>
+                <img src="../assets/images/confirm_password_logo.png" alt="confirm-password-logo"/>
+                <input class="input" type="text" placeholder="Confirm Password" required> 
+            </label>
+            <button class="register-page-button">Register</button>
             <div class="form-links">
-                <p>Don't have an account? <a href="register.html">Register</a></p>
+                <p>Already have an account? <a href="login.html">Login instead</a></p>
             </div>
 
         </form>
