@@ -47,7 +47,7 @@ html, body {
     margin: auto;
 }
 
-/* Common header background Styles*/
+/* Common navbar Styles*/
 
 #nav-menu{
     display: flex;
@@ -76,7 +76,6 @@ html, body {
     align-items: center;
 }
 
-/* Logo animation Styles*/
 
 .logo a img{
     width: 70px;
@@ -396,7 +395,8 @@ button:hover{
     grid-area: button;
 }
 
-/* ===END_home page styles=== */
+/* ===END_home page additional styles=== */
+
 
 /* Common footer styles for all pages */
 footer{
@@ -415,9 +415,10 @@ footer{
     letter-spacing: 0.1em;
 }
 
+
 #footer-left {
     margin-left: 3.12%;
-
+    margin-right: 60%;
 }
 
 #footer-left .footer-logo >img {
@@ -436,7 +437,6 @@ footer{
     margin-bottom: 50px;
     text-transform: capitalize;
 }
-
 
 .bottom p{
     display: flex;
@@ -501,7 +501,6 @@ footer{
 {
     margin-top: 20px;
 }
-
 
 
 /* Common Input styles for login page, register page and setting page*/
@@ -609,6 +608,7 @@ footer{
 
 
 /* ===END_login.html,register.html additional styles=== */
+
 
 
 /* ===BEGIN_setting.html additional styles=== */
@@ -720,6 +720,7 @@ tr:hover{
 /* ===END_leaderboard.html styles=== */
 
 
+
 /* ===BEGIN_support.html styles=== */
 #help-section{
     display: grid;
@@ -823,14 +824,30 @@ tr:hover{
 
 /* ===END_support.html styles=== */
 
+
 /* ===BEGIN_game.html styles=== */
 
 .game{
     width: 100%;
     height: 100vh;
     background: rgba(0, 0, 0, 1);
+    margin-top:13%;
+}
+
+.game h1{
+    font-family: var(--font-family);
+    font-size: 40px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: normal;
+    background: var(--title);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-stroke: 0.1em transparent;
+    background-clip: text;
+    text-transform: uppercase;
+    margin-left: 40%;
 }
 
 /* ===END_game.html styles=== */
-
    
