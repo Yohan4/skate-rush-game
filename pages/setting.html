@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skate rush game</title>
     <link rel="stylesheet" type="text/css" href="../css/style.css">
-    <script src="../index.js"></script>
+    <script src="../js/button.js"></script>
 </head>
 
+<!-- background container -->
 <body id="background">
+    <!-- header container for navigation bar -->
     <header id="nav-menu">
         <div class="logo">
             <a href="/">
@@ -31,15 +33,19 @@
     </header>
 
     <div class="wrapper">
+        <!-- Change password form container -->
         <form id="form">
             <p> Change Password</p>
             <label class="current">
+                <img src="../assets/images/username_logo.svg" alt="username-icon"/>
                 <input class="input" type="text" placeholder="Username" required> 
             </label>
             <label >
+                <img src="../assets/images/password_icon.svg" alt="password-logo"/>
                 <input class="input" type="text" placeholder="Password" required> 
             </label>
             <label>
+                <img src="../assets/images/change-password.svg" alt="-change-password-logo"/>
                 <input class="input" type="text" placeholder="Change Password" required> 
             </label>
             <p class="strong-password">Use 8 or more characters with a mix of letters, numbers and symbol !</p>
@@ -47,8 +53,8 @@
             <button class="cancel">cancel</button>
         </form>
     </div>
-   
-
+    
+    <!-- footer container -->
     <footer>
         <div id="footer-left">
             <div class="footer-logo">
@@ -71,8 +77,6 @@
             </div>
 
         </div>
-
-
         <div class="bottom">
             <p>
                 © Copyright 2023 by Akilesh Venkata Subhadu. All Rights Reserved.

@@ -1,6 +1,3 @@
-function redirectToLogin() {
-    window.location.href = '/pages/login.html';
-}
 
 const placeholder = () => {
     const dob = document.getElementById('dob')
@@ -14,5 +11,3 @@ const changePlaceholderType = () => {
     const dob = document.getElementById('dob');
     dob.type ='date';
 };
-
-

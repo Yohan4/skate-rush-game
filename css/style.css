@@ -47,7 +47,7 @@ html, body {
     margin: auto;
 }
 
-/* The header background Styles*/
+/* Common header background Styles*/
 
 #nav-menu{
     display: flex;
@@ -213,6 +213,10 @@ button:hover{
 }
 
 
+/* ===BEGIN_home page additional styles=== */
+
+/* hero section styles */
+
 #skateboard-background-section{
     display: grid;
     z-index: 0;
@@ -246,8 +250,6 @@ button:hover{
     text-transform: uppercase;
     grid-area: skate;
     animation: colorChange 1s linear infinite;
-  
-    
 }
 
 @keyframes colorChange {
@@ -293,6 +295,8 @@ button:hover{
 .learn-more-button{
     grid-area:  subtitle;
 }
+
+/* sub-hero section styles */
 
 #sub-hero-section{
     margin-top: 270px;
@@ -390,6 +394,7 @@ button:hover{
     grid-area: button;
 }
 
+/* ===END_home page styles=== */
 
 /* Common footer styles for all pages */
 footer{
@@ -751,7 +756,8 @@ tr:hover{
     flex-direction: column;
     align-items: center;
     margin-right: 20px;
-    background-color: rgba(8, 131, 149, 0.9);
+    background-color: rgba(8, 131, 149, 0.7);
+    /* background-color: #0A4D68; */
     border-radius: 15px;
 }
 
@@ -796,3 +802,12 @@ tr:hover{
 
 /* ===END_support.html styles=== */
 
+/* ===BEGIN_game.html styles=== */
+
+.game{
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 1);
+}
+
+/* ===END_game.html styles=== */
