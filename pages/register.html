@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skate rush game</title>
     <link rel="stylesheet" type="text/css" href="../css/style.css">
-    <script src="../js/button.js"></script>
-    <script src="../js/register.js"></script>
 </head>
 
 <!-- background container -->
@@ -36,34 +34,54 @@
 
     <div class="wrapper">
         <!-- Register form container -->
-        <form id="form">
+        <form id="form" onsubmit="validateRegisterForm(event)">
             <p> Register here !</p>
             <label class="register-username">
-                <img src="../assets/images/username_logo.svg" alt="username-icon"/>
-                <input class="input" type="text" placeholder="Username" required> 
+                <div class="label-items">
+                    <img src="../assets/images/username_logo.svg" alt="username-icon"/>
+                    <input id="username"class="input" type="text" placeholder="Username" required>
+                </div>
+                <div id="usernameMessage"></div>
             </label>
             <label>
-                <img src="../assets/images/email_logo.png" alt="email-icon"/>
-                <input class="input" type="text" placeholder="Email" required> 
+                <div class="label-items">
+                    <img src="../assets/images/email_logo.png" alt="email-icon"/>
+                    <input id="email" class="input" type="text" placeholder="Email" required> 
+                </div>
+                <div id="emailMessage"></div>
             </label>
             <label>
-                <img src="../assets/images/dob_logo.png" alt="calendar-icon"/>
-                <input id="dob" class="input" type="text" placeholder="Date of birth" onfocus="changePlaceholderType()" onblur="placeholder()" required> 
+                <div class="label-items">
+                    <img src="../assets/images/dob_logo.png" alt="calendar-icon"/>
+                    <input id="dob" class="input" type="text" placeholder="Date of birth" onfocus="changePlaceholderType()" onblur="placeholder()" required> 
+                </div>
+                <div id="dateMessage"></div>
             </label>
 
             <label>
-                <img src="../assets/images/password_icon.svg" alt="password-logo"/>
-                <input class="input" type="text" placeholder="Password" required> 
+                <div class="label-items">
+                    <img src="../assets/images/gender-logo.svg" alt="gender-logo"/>
+                    <select id="gender" class="input" required>
+                        <option value="">Enter your Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+                <div id="genderMessage"></div>
             </label>
+
             <label>
-                <img src="../assets/images/confirm_password_logo.png" alt="confirm-password-logo"/>
-                <input class="input" type="text" placeholder="Confirm Password" required> 
+                <div class="label-items">
+                    <img src="../assets/images/password_icon.svg" alt="password-logo"/>
+                    <input id="password" class="input" type="text" placeholder="Password" required> 
+                </div>
+                <div id="passwordMessage"></div>
             </label>
-            <button class="register-page-button">Register</button>
+
+            <button type="submit" class="register-page-button">Register</button>
             <div class="form-links">
                 <p>Already have an account? <a href="login.html">Login instead</a></p>
             </div>
-
         </form>
     </div>
    
@@ -96,6 +114,7 @@
             </p>
         </div>
     </footer>
-    
+    <script src="../js/register.js"></script>
+    <script src="../js/button.js"></script>
 </body>
 </html>

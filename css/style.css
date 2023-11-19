@@ -474,24 +474,27 @@ footer{
 
 /* form  label styles*/
 
-#form label {
-    height: 80px;
-    width: 78.8%;
-    border: none;
-    border-radius: 7px;
-    background-color: #088395;
+#form .label-items {
+    height: 85px;
+    width: 100%;
     display: flex;
     align-items: center;
-    box-shadow: 6px 6px  rgba(0, 0, 0, 1), 2px 15px 20px rgba(0, 255, 202);
+   
 }
 
-#form label >img{
+
+#form .label-items >img{
     margin-left: 32px;
 }
 
 
 #form label{
-    margin-top: 100px;
+    margin-top: 40px;
+    width: 78.8%;
+    border: none;
+    border-radius: 7px;
+    background-color: #088395;
+    box-shadow: 6px 6px  rgba(0, 0, 0, 1), 2px 15px 20px rgba(0, 255, 202);
 
 }
 
@@ -604,6 +607,21 @@ footer{
   
 .form-links p a:hover{
     color: #00FFCA;
+}
+
+#usernameMessage,
+#emailMessage,
+#passwordMessage, 
+#dateMessage,
+#genderMessage{
+    font-family: var(--font-family);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: normal;
+    text-align:left;
+    margin-top: -10px;
+    margin-left: 32px;
 }
 
 
