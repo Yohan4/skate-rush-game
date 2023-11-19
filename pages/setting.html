@@ -36,16 +36,25 @@
         <form id="form">
             <p> Change Password</p>
             <label class="current">
-                <img src="../assets/images/username_logo.svg" alt="username-icon"/>
-                <input class="input" type="text" placeholder="Username" required> 
+                <div class="label-items">
+                    <img src="../assets/images/username_logo.svg" alt="username-icon"/>
+                    <input id="username"class="input" type="text" placeholder="Username" required>
+                </div>
+                <div id="usernameMessage"></div>
             </label>
             <label >
-                <img src="../assets/images/password_icon.svg" alt="password-logo"/>
-                <input class="input" type="text" placeholder="Password" required> 
+                <div class="label-items">
+                    <img src="../assets/images/password_icon.svg" alt="password-logo"/>
+                    <input id="password" class="input" type="text" placeholder="Password" required> 
+                </div>
+                <div id="passwordMessage"></div>
             </label>
             <label>
-                <img src="../assets/images/change-password.svg" alt="-change-password-logo"/>
-                <input class="input" type="text" placeholder="Change Password" required> 
+                <div class="label-items">
+                    <img src="../assets/images/change-password.svg" alt="-change-password-logo"/>
+                    <input class="input" type="text" placeholder="Change Password" required> 
+                </div>
+                <div id="passwordMessage"></div>
             </label>
             <p class="strong-password">Use 8 or more characters with a mix of letters, numbers and symbol !</p>
             <button class="save">save</button>

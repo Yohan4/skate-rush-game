@@ -33,17 +33,23 @@
     
     <div class="wrapper">
         <!-- Login form container -->
-        <form id="form">
+        <form id="form" onsubmit="validateLoginForm(event)">
             <p> Welcome Back !</p>
             <label class="label-one">
-                <img src="../assets/images/username_logo.svg" alt="username-icon"/>
-                <input class="input" type="text" placeholder="Username" required> 
+                <div class="label-items">
+                    <img src="../assets/images/username_logo.svg" alt="username-icon"/>
+                    <input id="username"class="input" type="text" placeholder="Username" required>
+                </div>
+                <div id="usernameMessage"></div>
             </label>
             <label>
-                <img src="../assets/images/password_icon.svg" alt="password-logo"/>
-                <input class="input" type="text" placeholder="Password" required> 
+                <div class="label-items">
+                    <img src="../assets/images/password_icon.svg" alt="password-logo"/>
+                    <input id="password" class="input" type="text" placeholder="Password" required> 
+                </div>
+                <div id="passwordMessage"></div>
             </label>
-            <button class="login-page-button">LOGIN</button>
+            <button type="submit" class="login-page-button">LOGIN</button>
             <div class="form-links">
                 <p>Don't have an account? <a href="register.html">Register</a></p>
             </div>
@@ -81,4 +87,5 @@
     </footer>
 </body>
 <script src="../js/button.js"></script>
+<script src="../js/login.js"></script>
 </html>

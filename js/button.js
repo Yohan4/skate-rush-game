@@ -23,5 +23,5 @@ function redirectToLogin() {
     window.location.href = '/pages/login.html';
 }
 
-// update function en every page load
+// Function to updatate every page load
 document.addEventListener('DOMContentLoaded',LoginLogoutButton)

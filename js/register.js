@@ -47,7 +47,7 @@ const usernameValidation = (usernameValue) => {
         return "Username must at least be 6 characters long"
     }  else if(!regex.test(usernameValue)){
         return "Username can only have undescore, digits & minimum of 3 alphabets"
-    } else {
+    }  else {
         // check if username already exists in the users array in local storage
         let users = JSON.parse(localStorage.getItem('users')) || [];
         if (users.some(user => user.username === usernameValue)) {
@@ -178,18 +178,12 @@ const validateRegisterForm = (event) => {
         dateValidation(dateValue) === null &&
         genderValidation(genderValue) === null) {
 
-        // parse existing users data otherwise use an empty
-        let users;
-        try {
-            users = JSON.parse(localStorage.getItem('users')) || [];
-        } catch (e) {
-            users = [];
-        }
-        
+        // parse existing users data otherwise use an empty array
+        let users = JSON.parse(localStorage.getItem('users')) || [];      
 
         // Object storing the data about new user
         const newUserData = {
-            username:usernameValue,
+            username: usernameValue,
             email: emailValue,
             password: passwordValue,
             date: dateValue,
@@ -199,6 +193,7 @@ const validateRegisterForm = (event) => {
         users.push(newUserData);
         localStorage.setItem('users',JSON.stringify(users));
         sessionStorage.setItem('isLoggedIn', 'true');
+
         alert("Registration sucessful!");
         window.location.href= '../index.html';
 
