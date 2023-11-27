@@ -39,21 +39,21 @@
             <label class="register-username">
                 <div class="label-items">
                     <img src="../assets/images/username_logo.svg" alt="username-icon"/>
-                    <input id="username"class="input" type="text" placeholder="Username" required>
+                    <input id="username"class="input" type="text" placeholder="Username">
                 </div>
                 <div id="usernameMessage"></div>
             </label>
             <label>
                 <div class="label-items">
                     <img src="../assets/images/email_logo.png" alt="email-icon"/>
-                    <input id="email" class="input" type="text" placeholder="Email" required> 
+                    <input id="email" class="input" type="text" placeholder="Email"> 
                 </div>
                 <div id="emailMessage"></div>
             </label>
             <label>
                 <div class="label-items">
                     <img src="../assets/images/dob_logo.png" alt="calendar-icon"/>
-                    <input id="dob" class="input" type="text" placeholder="Date of birth" onfocus="changePlaceholderType()" onblur="placeholder()" required> 
+                    <input id="dob" class="input" type="text" placeholder="Date of birth" onfocus="changePlaceholder()" onblur="showplaceholderText()"> 
                 </div>
                 <div id="dateMessage"></div>
             </label>
@@ -61,7 +61,7 @@
             <label>
                 <div class="label-items">
                     <img src="../assets/images/gender-logo.svg" alt="gender-logo"/>
-                    <select id="gender" class="input" required>
+                    <select id="gender" class="input">
                         <option value="">Enter your Gender</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
@@ -73,7 +73,7 @@
             <label>
                 <div class="label-items">
                     <img src="../assets/images/password_icon.svg" alt="password-logo"/>
-                    <input id="password" class="input" type="text" placeholder="Password" required> 
+                    <input id="password" class="input" type="text" placeholder="Password"> 
                 </div>
                 <div id="passwordMessage"></div>
             </label>

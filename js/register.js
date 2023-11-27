@@ -1,5 +1,5 @@
 // function to show placeholder type as text
-const placeholder = () => {
+const showplaceholderText = () => {
     const dob = document.getElementById('dob')
     if (dob.value === ''){
         dob.type = 'text';
@@ -8,7 +8,7 @@ const placeholder = () => {
 };
 
 // function to show placeholder type as date
-const changePlaceholderType = () => {
+const changePlaceholder = () => {
     const dob = document.getElementById('dob');
     dob.type ='date';
 };
@@ -172,12 +172,14 @@ const validateRegisterForm = (event) => {
     const dateValue = date.value;
     const genderValue = gender.value;
 
+
+
     if (usernameValidation(usernameValue) === null &&
         emailValidation(emailValue) === null &&
         passwordValidation(passwordValue) === null &&
         dateValidation(dateValue) === null &&
         genderValidation(genderValue) === null) {
-
+    
         // parse existing users data otherwise use an empty array
         let users = JSON.parse(localStorage.getItem('users')) || [];      
 
@@ -197,7 +199,21 @@ const validateRegisterForm = (event) => {
         alert("Registration sucessful!");
         window.location.href= '../index.html';
 
-    } else{
-        alert("Validation failed!")
+    } else {
+        if (!usernameValue){
+            document.getElementById("usernameMessage").textContent = "Username cannot be empty";
+        }
+        if (!emailValue){
+            document.getElementById("emailMessage").textContent = "Email cannot be empty";
+        }
+        if (!dateValue){
+            document.getElementById("dateMessage").textContent = "Date cannot be empty";
+        }
+        if (!genderValue){
+            document.getElementById("genderMessage").textContent = "Gender cannot be empty";
+        }
+        if (!passwordValue){
+            document.getElementById("passwordMessage").textContent = "Password cannot be empty";
+        }
     }
-}
+}         

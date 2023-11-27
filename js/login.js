@@ -1,7 +1,6 @@
 let username = document.getElementById("username");
 let password = document.getElementById("password");
 
-
 //Real-time validation event listener for the username input field
 username.addEventListener("input", () => {
     let messageBox = document.getElementById("usernameMessage")
@@ -79,5 +78,12 @@ const validateLoginForm = (event) => {
             sessionStorage.setItem('isLoggedIn', 'true');
             alert("Login sucessful!");
             window.location.href= '../index.html';
+        }else {
+            if (!usernameValue){
+                document.getElementById("usernameMessage").textContent = "Username cannot be empty";
+            }
+            if (!passwordValue){
+                document.getElementById("passwordMessage").textContent = "Password cannot be empty";
+            }
         }
-    };
+    }
