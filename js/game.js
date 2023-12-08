@@ -5,22 +5,20 @@ canvas.height = 750;
 canvas.width = 1420;
 
 
-const skateboarding = new Image();
-skateboarding.src = "../assets/images/skateboy_run.png";
-
-const  jumping = new Image();
-jumping.src = "../assets/images/skateboy_jump.png";
-
 const falling = new Image();
 falling.src = "../assets/images/skateboy_fall.png";
 
+const background_image = new Image();
+background_image.src =  "../assets/images/background_platform.png";
+
+
 const groundLevel = 580;
-const gravity =  0.33;
+const gravity =  700;
 
 
 
 class Player {
-    constructor(){  
+    constructor(skateboarding,jumping,falling){  
         this.location = {
             x: 100,
             y: 580
@@ -31,7 +29,7 @@ class Player {
         this.game_over = false;
         this._score = true;
         this.skateboarding = new Spritesheet(skateboarding, 9, 120.6, 146, 500);
-        this.jumping = new Spritesheet(jumping, 7, 142, 146, 500);
+        this.jumping = new Spritesheet(jumping, 2, 143, 146, 500);
         this.falling = new Spritesheet(falling, 3, 46.44, 146, 60)
         this.velocity = {
             x:0,
@@ -43,14 +41,16 @@ class Player {
 
     jump(){
         if(this.onGround){
-            this.velocity.y = -15;
+            this.velocity.y = -650;
             this.onGround = false;
+            updateScore();
         }
     }
     update(deltaTime){
+        deltaTime /= 1000;
         if(!this.onGround){
-            this.velocity.y += gravity;
-            this.location.y += this.velocity.y;
+            this.velocity.y += gravity *deltaTime;
+            this.location.y += this.velocity.y*deltaTime ;
 
             if (this.location.y > groundLevel){
                 this.location.y = groundLevel;
@@ -78,7 +78,7 @@ class Spritesheet {
         this.columns = columns;
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
-        this.animationSpeed =animationSpeed;
+        this.animationSpeed = animationSpeed / 1000;
 
         this.currentFrame = 0;
         this.frameTimer = 0;
@@ -98,33 +98,239 @@ class Spritesheet {
         let frameX = (this.currentFrame % this.columns) * this.frameWidth;
 
         context.drawImage(this.image, frameX, 0, this.frameWidth, this.frameHeight, x, y, this.frameWidth, this.frameHeight);
+    }   
+}
+
+class staticBackground {
+    constructor(image){
+        this.location = {
+            x: 0,
+            y: 0
+        };
+        this.image = image;
     }
 
-    
+    draw() {
+        context.drawImage(this.image, this.location.x, this.location.y, canvas.width, canvas.height-200);
+    }
 }
 
-const player = new Player();
+class layer {
+    constructor({image, speed, x, y, layerType}) {
+        this.location = {
+            x,
+            y,
+        };
+        this.image = image;
+        this.speed = speed;
+        this.width = image.width;
+        this.height = image.height;
+        this.layerType = layerType;
+    }
+
+    update(){
+        this.location.x -= this.speed;
+        let spacing;
+        let totalWidth;
+        if(this.layerType === 'layer_one'){
+            spacing = 120
+        } else {
+            spacing = 0;        
+        }
+        totalWidth = this.width + spacing;
+
+        if (this.location.x <= -totalWidth){
+            this.location.x += totalWidth;
+        }
+    }
+   
+
+    draw(context) {
+        let PositionX =this.location.x;
+
+        let spacing;
+        let totalWidth;
+
+        if(this.layerType === 'layer_one'){
+            spacing = 120
+        } else {
+            spacing = 0;        
+        }
+        totalWidth = this.width + spacing;
+
+        while (PositionX < canvas.width) {
+            context.drawImage (this.image, PositionX, this.location.y, this.width, this.height);
+            PositionX += totalWidth;
+        }
+        
+    }
+
+}
+
+class PowerUp {
+    constructor(image, x, y, speed, points){
+        this.image = image;
+        this.location = {
+            x,
+            y,
+        };
+        this.speed = speed;
+        this.width = image.width;
+        this.height = image.height;
+        this.points = points;
+    }
+
+    update(){
+        this.location.x -= this.speed;
+
+    }
+    draw(){
+        context.drawImage (this.image, this.location.x, this.location.y, this.width, this.height);
+    }
+}
+
+
+const backgroundLayer = new staticBackground(background_image);
 let lastTime = 0;
+let player;
+let powerUpArray = [];
+let powerUps = [];
+let score = 0;
+let lastPowerUpTime = 0;
+const timeInterval = 10000;
 
-// game loop
-function animate(timestamp){
-
-    const deltaTime = timestamp - lastTime;
-    lastTime = timestamp;
-
-    context.clearRect(0, 0, canvas.width, canvas.height)
-    player.skateboarding.update(deltaTime);
-    player.jumping.update(deltaTime);
-    player.update(deltaTime);
-    player.draw(context);
-    requestAnimationFrame(animate);
+function updateScore(){
+    score += 1;
 }
 
-animate(0);
+function drawScore(context){
+    context.font = "20px Arial";
+    context.fillstyle = "black";
+    context.fillText("Score: " + score, 10, 50);
+
+}
+
+function generatePowerUp(){
+    const powerData = powerUpArray[Math.floor(Math.random() * powerUpArray.length)];
+    const PositionX = canvas.width;
+    const PositionY = Math.floor(Math.random() * 101) + 310;
+    const speed = 0.8;
+    const randomPowerUp = new PowerUp(powerData.image, PositionX, PositionY, speed, powerData.points)
+    powerUps.push(randomPowerUp);
+}
+
+function powerUpCollision(player, powerUp) {
+    //check horizantal collison
+    return (
+        player.location.x < powerUp.location.x + powerUp.width &&
+        player.location.x + player.width > powerUp.location.x &&
+        //check vertical collision
+        player.location.y < powerUp.location.y + powerUp.height &&
+        player.location.y + player.height > powerUp.location.y
+    );
+}
+
+
+
+function loadImage(src){
+    return new Promise((resolve, reject) => {
+        const image = new Image();
+            image.onload = () => resolve(image);
+            image.onerror = reject;
+            image.src = src;
+    });
+} 
+
+
+
+async function loadImages(){
+    try {
+        // Load Layer images
+        const layer_one = await loadImage("../assets/images/lamp.png");
+        const layer_two = await loadImage("../assets/images/road.png");
+
+        // Load Player images
+        const skateboarding = await loadImage("../assets/images/skateboy_run.png");
+        const jumping = await loadImage("../assets/images/skateboy_jump.png");
+        
+        // Load and store power ups images in array
+        powerUpArray = [
+            { image: await loadImage("../assets/images/50_points.png"), points:50 },
+            { image: await loadImage("../assets/images/100_points.png"), points:100 },
+            { image: await loadImage("../assets/images/120_points.png"), points:120 },
+            { image: await loadImage("../assets/images/125_points.png"), points:125 },
+            { image: await loadImage("../assets/images/special_power.png"), points:150 }
+        ];
+
+        player = new Player(skateboarding, jumping, falling);
+        const second_layer = new layer({image:layer_two, speed:1, x:0, y:530, layerType:'layer_two'});
+        const first_layer = new layer({image:layer_one, speed:0.8, x:40, y:300, layerType:'layer_one'});
+
+        requestAnimationFrame(animate);
+
+        // game loop
+        function animate(timestamp){
+            const deltaTime = timestamp - lastTime;
+            lastTime = timestamp;
+            context.clearRect(0, 0, canvas.width,canvas.height)
+
+            first_layer.update();
+            second_layer.update();
+            backgroundLayer.draw(context);
+            first_layer.draw(context);
+            second_layer.draw(context);
+
+            // update and draw player
+            if (player) {
+                player.update(deltaTime); 
+                player.draw(context);
+                drawScore(context); 
+            }
+            
+            // update and draw power-ups
+            powerUps.forEach(PowerUp => {
+                PowerUp.update();
+                PowerUp.draw(context);
+                if (powerUpCollision(player, PowerUp)) {
+                    updateScore(PowerUp.points);
+                    PowerUp.collected = true;
+                }
+
+
+            });
+
+            // Remove off-screen power-up
+            powerUps = powerUps.filter(powerUp => powerUp.location.x + powerUp.width > 0 && !powerUp.collected);
+
+            // generate new power-up after time interval
+            lastPowerUpTime += deltaTime;
+            if (lastPowerUpTime > timeInterval) {
+                generatePowerUp();
+                lastPowerUpTime = 0;
+            }
+
+
+            requestAnimationFrame(animate);
+        }
+
+        animate(0);
+    } catch (error) {
+        console.error('An error occured while loading the image', error);
+    }
+}
+
+loadImages();
+
 
 window.addEventListener('keydown', (event) => {
-    if (event.key === ' ') {
+    if (event.key === ' ' && player) {
         event.preventDefault();
+        player.jump();
+    }
+});
+
+canvas.addEventListener('mousedown', (event) => {
+    if (event.button === 0 && player) {
         player.jump();
     }
 });
