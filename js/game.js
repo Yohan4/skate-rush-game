@@ -36,6 +36,8 @@ class Player {
             y:0
         };
         this.onGround = true;
+        this.width = 143;
+        this.height = 146;
         
     }
 
@@ -43,7 +45,7 @@ class Player {
         if(this.onGround){
             this.velocity.y = -650;
             this.onGround = false;
-            updateScore();
+            updateScore(1);
         }
     }
     update(deltaTime){
@@ -178,6 +180,7 @@ class PowerUp {
         this.width = image.width;
         this.height = image.height;
         this.points = points;
+        this.collected = false;
     }
 
     update(){
@@ -197,10 +200,10 @@ let powerUpArray = [];
 let powerUps = [];
 let score = 0;
 let lastPowerUpTime = 0;
-const timeInterval = 10000;
+const timeInterval = 15000;
 
-function updateScore(){
-    score += 1;
+function updateScore(points){
+    score += points;
 }
 
 function drawScore(context){
@@ -214,14 +217,14 @@ function generatePowerUp(){
     const powerData = powerUpArray[Math.floor(Math.random() * powerUpArray.length)];
     const PositionX = canvas.width;
     const PositionY = Math.floor(Math.random() * 101) + 310;
-    const speed = 0.8;
+    const speed = 0.5;
     const randomPowerUp = new PowerUp(powerData.image, PositionX, PositionY, speed, powerData.points)
     powerUps.push(randomPowerUp);
 }
 
 function powerUpCollision(player, powerUp) {
-    //check horizantal collison
     return (
+        //check horizantal collison
         player.location.x < powerUp.location.x + powerUp.width &&
         player.location.x + player.width > powerUp.location.x &&
         //check vertical collision
@@ -229,7 +232,6 @@ function powerUpCollision(player, powerUp) {
         player.location.y + player.height > powerUp.location.y
     );
 }
-
 
 
 function loadImage(src){
@@ -259,7 +261,7 @@ async function loadImages(){
             { image: await loadImage("../assets/images/100_points.png"), points:100 },
             { image: await loadImage("../assets/images/120_points.png"), points:120 },
             { image: await loadImage("../assets/images/125_points.png"), points:125 },
-            { image: await loadImage("../assets/images/special_power.png"), points:150 }
+            { image: await loadImage("../assets/images/special_power.png"), points:1 }
         ];
 
         player = new Player(skateboarding, jumping, falling);
@@ -288,14 +290,14 @@ async function loadImages(){
             }
             
             // update and draw power-ups
-            powerUps.forEach(PowerUp => {
-                PowerUp.update();
-                PowerUp.draw(context);
-                if (powerUpCollision(player, PowerUp)) {
-                    updateScore(PowerUp.points);
-                    PowerUp.collected = true;
+            powerUps.forEach(powerUp => {
+                powerUp.update();
+                powerUp.draw(context);
+                if (powerUpCollision(player, powerUp)) {
+                    console.log("Collision detected with power-up");  
+                    updateScore(powerUp.points);
+                    powerUp.collected = true;
                 }
-
 
             });
 
