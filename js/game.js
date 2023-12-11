@@ -20,11 +20,11 @@ const gravity =  700;
 class Player {
     constructor(skateboarding,jumping,falling){  
         this.location = {
-            x: 100,
-            y: 580
+            x: 150,
+            y: groundLevel
         };
         this.dead = false;
-        this.lives = 4;
+        this.lives = 5;
         this.start = false;
         this.game_over = false;
         this._score = true;
@@ -36,31 +36,52 @@ class Player {
             y:0
         };
         this.onGround = true;
-        this.width = 143;
-        this.height = 146;
+        this.colliding = false;
+        
         
     }
 
     jump(){
         if(this.onGround){
-            this.velocity.y = -650;
+            this.velocity.y = -600;
             this.onGround = false;
             updateScore(1);
         }
     }
+
+    onCollision(lives){
+        if (!this.colliding) {
+            this.colliding = true;
+            this.lives -= 1;
+            if (lives.length > 0) {
+                lives.pop();
+            }
+        }
+    }
+
+    endCollision(){
+        this.colliding = false;
+    }
+    
     update(deltaTime){
         deltaTime /= 1000;
         if(!this.onGround){
             this.velocity.y += gravity *deltaTime;
             this.location.y += this.velocity.y*deltaTime ;
+            this.width = this.jumping.frameWidth;
+            this.height = this.jumping.frameHeight;
 
             if (this.location.y > groundLevel){
                 this.location.y = groundLevel;
                 this.onGround = true;
                 this.velocity.y = 0;
             }
+        } else {
+            this.width = this.skateboarding.frameWidth;
+            this.height = this.skateboarding.frameHeight;
+            this.skateboarding.update(deltaTime);
         }
-        this.onGround ? this.skateboarding.update(deltaTime) : this.jumping.update(deltaTime);
+
     }
 
     draw(context){
@@ -81,7 +102,7 @@ class Spritesheet {
         this.frameWidth = frameWidth;
         this.frameHeight = frameHeight;
         this.animationSpeed = animationSpeed / 1000;
-
+      
         this.currentFrame = 0;
         this.frameTimer = 0;
         this.totalFrames = columns;
@@ -169,6 +190,7 @@ class layer {
 
 }
 
+
 class PowerUp {
     constructor(image, x, y, speed, points){
         this.image = image;
@@ -192,15 +214,60 @@ class PowerUp {
     }
 }
 
+class obstacles {
+    constructor(image, x , y, speed, points){
+        this.image = image;
+        this.location = {
+            x,
+            y,
+        };
+        this.speed = speed;
+        this.width = image.width;
+        this.height = image.height;
+        this.points = points;
+    }
+
+    update(){
+        this.location.x -= this.speed;
+
+    }
+    draw(){
+        context.drawImage (this.image, this.location.x, this.location.y, this.width, this.height);
+    }
+}
+
+class fixed_objects {
+    constructor({image, x , y}){
+        this.image = image;
+        this.location = {
+            x,
+            y,
+        };
+        this.width = image.width;
+        this.height = image.height;
+        this.alive = true;
+    }
+
+    draw(){
+        context.drawImage (this.image, this.location.x, this.location.y);
+    }
+
+}
+
 
 const backgroundLayer = new staticBackground(background_image);
 let lastTime = 0;
 let player;
+let heartImage;
 let powerUpArray = [];
 let powerUps = [];
+let obstaclesArray = [];
+let activeObstacles = [];
 let score = 0;
 let lastPowerUpTime = 0;
-const timeInterval = 15000;
+let lastObstacleTime = 0;
+let obstacleTimeInterval = getRandomInterval(1500, 3000);
+let timeInterval = 15000;
 
 function updateScore(points){
     score += points;
@@ -213,25 +280,86 @@ function drawScore(context){
 
 }
 
+// function to generate a power up randomly from powerUpArray and store the selected power up in active powerUps array
+
 function generatePowerUp(){
     const powerData = powerUpArray[Math.floor(Math.random() * powerUpArray.length)];
     const PositionX = canvas.width;
     const PositionY = Math.floor(Math.random() * 101) + 310;
-    const speed = 0.5;
+    const speed = 2.0;
     const randomPowerUp = new PowerUp(powerData.image, PositionX, PositionY, speed, powerData.points)
     powerUps.push(randomPowerUp);
 }
 
+// function to check collision betwen player and POWER UPS
+
 function powerUpCollision(player, powerUp) {
+    const powerCenterXStart = powerUp.location.x + powerUp.width / 4;
+    const powerCenterXEnd = powerUp.location.x + (powerUp.width * 3 / 4);
+    const powerCenterYStart = powerUp.location.y + powerUp.height / 4;
+    const powerCenterYEnd = powerUp.location.y + (powerUp.height * 3 / 4);
+
     return (
-        //check horizantal collison
-        player.location.x < powerUp.location.x + powerUp.width &&
-        player.location.x + player.width > powerUp.location.x &&
-        //check vertical collision
-        player.location.y < powerUp.location.y + powerUp.height &&
-        player.location.y + player.height > powerUp.location.y
+        player.location.x < powerCenterXEnd &&
+        player.location.x + player.width > powerCenterXStart &&
+        player.location.y < powerCenterYEnd &&
+        player.location.y + player.height > powerCenterYStart
     );
 }
+
+// function to create heart images on canvas
+
+function createLives(heartImage){
+    const lives = [];
+    const positionX = canvas.width - 280;
+    const spacing = 50;
+
+    for (let i=0; i < 5; i++){
+        lives.push(new fixed_objects({
+            image: heartImage,
+            x: positionX + i * spacing,
+            y: 20
+        }));
+    }
+
+    return lives;
+
+}
+
+// function to generate obstacle
+
+function generateObstacle(){
+    const obstacleData = obstaclesArray[Math.floor(Math.random() * obstaclesArray.length)];
+    const PositionX = canvas.width;
+    const PositionY = obstacleData.y;
+    const speed = 1.5;
+    return new obstacles(obstacleData.image, PositionX, PositionY, speed, obstacleData.points);
+
+}
+
+
+function getRandomInterval(minimum, maximum) {
+    return Math.floor(Math.random() * (maximum - minimum +1)) + minimum;
+}
+
+
+// function to check collison betwen player and obstacle
+
+function obstacleCollision(player, obstacle) {
+
+    const obstacleCenterXStart = obstacle.location.x + obstacle.width / 4;
+    const obstacleCenterXEnd = obstacle.location.x + (obstacle.width * 3 / 4);
+    const obstacleCenterYStart = obstacle.location.y + obstacle.height / 4;
+    const obstacleCenterYEnd = obstacle.location.y + (obstacle.height * 3 / 4);
+
+    return (
+        player.location.x < obstacleCenterXEnd &&
+        player.location.x + player.width > obstacleCenterXStart &&
+        player.location.y < obstacleCenterYEnd &&
+        player.location.y + player.height > obstacleCenterYStart
+    );
+}
+
 
 
 function loadImage(src){
@@ -243,7 +371,7 @@ function loadImage(src){
     });
 } 
 
-
+// Asynchronous is used to load images
 
 async function loadImages(){
     try {
@@ -254,6 +382,10 @@ async function loadImages(){
         // Load Player images
         const skateboarding = await loadImage("../assets/images/skateboy_run.png");
         const jumping = await loadImage("../assets/images/skateboy_jump.png");
+
+        // Load Heart images
+        heartImage =  await loadImage("../assets/images/heart.png");
+        const lives = createLives(heartImage)
         
         // Load and store power ups images in array
         powerUpArray = [
@@ -264,8 +396,20 @@ async function loadImages(){
             { image: await loadImage("../assets/images/special_power.png"), points:1 }
         ];
 
+        // Load and store obstacles images in array
+        obstaclesArray = [
+            { image: await loadImage("../assets/images/barrier.png"), points:3, y: 570 },
+            { image: await loadImage("../assets/images/bear.png"), points:8, y: 490 },
+            { image: await loadImage("../assets/images/big_wheel.png"), points:6, y: 520 },
+            { image: await loadImage("../assets/images/cat.png"), points:3 , y: 530 },
+            { image: await loadImage("../assets/images/cats.png"), points:5, y: 520  },
+            { image: await loadImage("../assets/images/cones.png"), points:3, y: 560  },
+            { image: await loadImage("../assets/images/small_wheel.png"), points:2, y: 560 }
+
+        ];
+
         player = new Player(skateboarding, jumping, falling);
-        const second_layer = new layer({image:layer_two, speed:1, x:0, y:530, layerType:'layer_two'});
+        const second_layer = new layer({image:layer_two, speed:1.3, x:0, y:530, layerType:'layer_two'});
         const first_layer = new layer({image:layer_one, speed:0.8, x:40, y:300, layerType:'layer_one'});
 
         requestAnimationFrame(animate);
@@ -301,7 +445,28 @@ async function loadImages(){
 
             });
 
-            // Remove off-screen power-up
+            let collisionDetected = false;
+
+            // update and draw obstacles
+            activeObstacles.forEach(obstacle => {
+                obstacle.update();
+                obstacle.draw(context);
+
+                if(obstacleCollision(player, obstacle)){
+                    collisionDetected = true;
+                    player.onCollision(lives);
+
+                }
+                    
+                
+            });
+
+            if (!collisionDetected && player.colliding) {
+                player.endCollision();
+            }
+
+            // Remove off-screen obtsacles and power-ups from active array
+            activeObstacles = activeObstacles.filter(obstacle => obstacle.location.x + obstacle.width > 0);
             powerUps = powerUps.filter(powerUp => powerUp.location.x + powerUp.width > 0 && !powerUp.collected);
 
             // generate new power-up after time interval
@@ -310,6 +475,19 @@ async function loadImages(){
                 generatePowerUp();
                 lastPowerUpTime = 0;
             }
+
+            // generate new obstacle after time interval
+            lastObstacleTime += deltaTime;
+            if (lastObstacleTime > obstacleTimeInterval) {
+                console.log('Attempting to generate a new obstacle.');
+                const newObstacle = generateObstacle();
+                activeObstacles.push(newObstacle);
+                console.log('New obstacle generated:', newObstacle);
+                lastObstacleTime = 0;
+                obstacleTimeInterval = getRandomInterval(1560,3000);
+            }
+
+            lives.forEach(life => life.draw());
 
 
             requestAnimationFrame(animate);
@@ -323,6 +501,7 @@ async function loadImages(){
 
 loadImages();
 
+// Detect when spacebar is clicked
 
 window.addEventListener('keydown', (event) => {
     if (event.key === ' ' && player) {
@@ -330,6 +509,8 @@ window.addEventListener('keydown', (event) => {
         player.jump();
     }
 });
+
+// Detect when left mouse is clicked on canvas only
 
 canvas.addEventListener('mousedown', (event) => {
     if (event.button === 0 && player) {
