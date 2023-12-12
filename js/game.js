@@ -5,9 +5,6 @@ canvas.height = 750;
 canvas.width = 1420;
 
 
-const falling = new Image();
-falling.src = "../assets/images/skateboy_fall.png";
-
 const background_image = new Image();
 background_image.src =  "../assets/images/background_platform.png";
 
@@ -27,17 +24,17 @@ class Player {
         this.lives = 5;
         this.start = false;
         this.game_over = false;
-        this._score = true;
+        this.score = true;
         this.skateboarding = new Spritesheet(skateboarding, 9, 120.6, 146, 500);
         this.jumping = new Spritesheet(jumping, 2, 143, 146, 500);
-        this.falling = new Spritesheet(falling, 3, 46.44, 146, 60)
+        this.falling = new Spritesheet(falling, 1, 162, 146, 0)
         this.velocity = {
             x:0,
             y:0
         };
         this.onGround = true;
         this.colliding = false;
-        
+        this.isJumping = false;
         
     }
 
@@ -45,6 +42,7 @@ class Player {
         if(this.onGround){
             this.velocity.y = -600;
             this.onGround = false;
+            this.isJumping = true;
             updateScore(1);
         }
     }
@@ -62,6 +60,11 @@ class Player {
     endCollision(){
         this.colliding = false;
     }
+
+    gameOver(){
+        this.game_over = true;
+        this.falling.currentFrame = 0;
+    }
     
     update(deltaTime){
         deltaTime /= 1000;
@@ -75,6 +78,7 @@ class Player {
                 this.location.y = groundLevel;
                 this.onGround = true;
                 this.velocity.y = 0;
+                this.isJumping = false;
             }
         } else {
             this.width = this.skateboarding.frameWidth;
@@ -85,12 +89,20 @@ class Player {
     }
 
     draw(context){
-        // change sprites to jumping if not on ground else show skateboarding sprite
-        if (!this.onGround){
-        this.jumping.draw(context, this.location.x, this.location.y);
-        } else{
-            this.skateboarding.draw(context,this.location.x, this.location.y);
-        }
+        if (this.game_over){
+            if (this.falling.currentFrame < this.falling.totalFrames){
+                this.falling.draw(context, this.location.x, this.location.y);
+            }
+        
+        } else {
+            // change sprites to jumping if not on ground else show skateboarding sprite
+            if (!this.onGround){
+                    this.jumping.draw(context, this.location.x, this.location.y);
+                } else {
+                    this.skateboarding.draw(context,this.location.x, this.location.y);
+                }
+            }
+        
     }
 
 }
@@ -274,9 +286,8 @@ function updateScore(points){
 }
 
 function drawScore(context){
-    context.font = "20px Arial";
-    context.fillstyle = "black";
-    context.fillText("Score: " + score, 10, 50);
+    context.fillstyle = "ffffff";
+    context.fillText("Score: " + score, 100, 50);
 
 }
 
@@ -361,6 +372,103 @@ function obstacleCollision(player, obstacle) {
 }
 
 
+const gameState = {
+    START : 'start',
+    NORMAL : 'normal',
+    HARD : 'hard',
+    GAME_OVER: 'game_over' ,
+};
+
+let currentGameState = gameState.START;
+
+const startMenuImage = new Image();
+
+// load Menu background image before showing drawMenu function
+startMenuImage.onload = function() {
+    drawMenu();
+};
+
+startMenuImage.src = "../assets/images/Menu_background.png";
+const buttonHeight = 70;
+const halfButtonHeight = buttonHeight/2;
+const buttonWidth = 300;
+const halfButtonWidth = buttonWidth / 2;
+const space = 100;
+const positionButtonY = canvas.height / 2;
+
+
+
+
+// function to draw start menu screen
+
+function drawMenu() {
+    context.clearRect(0, 0 ,canvas.width, canvas.height);
+    context.drawImage(startMenuImage, 0, 0 , canvas.width, canvas.height);
+
+    context.shadowOffsetX = 5;
+    context.shadowOffsetY = 5;
+    context.shadowBlur = 50;
+    context.shadowColor = 'rgba(0, 255, 202, 0.9)';
+
+
+    // determining position of buttons on canvas
+    const positionButtonX = canvas.width / 2 - buttonWidth / 2;
+    const normalButton = positionButtonY;
+    const hardButton = positionButtonY + space;
+    
+    context.fillStyle = 'rgba(10, 77, 104, 0.9)';
+    context.fillRect(positionButtonX, normalButton, buttonWidth, buttonHeight);
+    context.fillRect(positionButtonX, hardButton, buttonWidth, buttonHeight);
+
+
+    context.strokeStyle = 'rgba(0, 255, 202, 0.9)';
+    context.strokeRect(positionButtonX, normalButton, buttonWidth, buttonHeight);
+    context.strokeRect(positionButtonX, hardButton, buttonWidth, buttonHeight);
+
+
+    context.lineWidth = 3;
+    context.font = '30px Montserrat';
+    context.textAlign = 'center';
+    context.fillStyle = 'rgba(10, 77, 104, 0.9)';
+    context.textBaseline = 'middle';
+
+
+    context.fillText('Normal mode', positionButtonX + buttonWidth / 2, normalButton + buttonHeight/2);
+    context.strokeText('Normal mode', positionButtonX + buttonWidth / 2, normalButton + buttonHeight/2);
+
+    context.fillText('Hard mode', positionButtonX + buttonWidth / 2, hardButton + buttonHeight/2);
+    context.strokeText('Hard mode', positionButtonX + buttonWidth / 2, hardButton + buttonHeight/2);
+
+    context.fillStyle = '#000000';
+    context.fillStyle = '#ffffff';
+    context.shadowOffsetX = 0;
+    context.shadowOffsetY = 0;
+    context.shadowBlur = 0;
+    context.shadowColor = 'transparent';
+    
+}
+
+// function to Display game over
+
+function displayGameOver() {
+    context.fillStyle = 'black'
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    context.fillStyle = 'red';
+    context.font = 'bold 60px Montserrat';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.fillText('Game Over', canvas.width / 2, canvas.height / 2 - 100);
+
+    context.font = 'bold 40px Montserrat';
+    context.fillText('Your score is : ' + score, canvas.width / 2, canvas.height / 2 + 10);
+
+    context.font = 'italic 30px Montserrat'
+    context.fillText('Hit enter to play again', canvas.width / 2, canvas.height / 2 + 80);
+}
+
+
+
 
 function loadImage(src){
     return new Promise((resolve, reject) => {
@@ -370,6 +478,7 @@ function loadImage(src){
             image.src = src;
     });
 } 
+
 
 // Asynchronous is used to load images
 
@@ -382,6 +491,8 @@ async function loadImages(){
         // Load Player images
         const skateboarding = await loadImage("../assets/images/skateboy_run.png");
         const jumping = await loadImage("../assets/images/skateboy_jump.png");
+        const falling = await loadImage("../assets/images/skateboy_fall.png");
+
 
         // Load Heart images
         heartImage =  await loadImage("../assets/images/heart.png");
@@ -412,7 +523,45 @@ async function loadImages(){
         const second_layer = new layer({image:layer_two, speed:1.3, x:0, y:530, layerType:'layer_two'});
         const first_layer = new layer({image:layer_one, speed:0.8, x:40, y:300, layerType:'layer_one'});
 
-        requestAnimationFrame(animate);
+
+        // function to set the difficulty of the game
+
+        function startGame(difficulty){
+            if (difficulty === 'normal'){
+                obstacleTimeInterval = getRandomInterval(1850,3500)
+            } else if (difficulty === 'hard') {
+                obstacleTimeInterval = getRandomInterval(1650,2500)
+            }
+
+            requestAnimationFrame(animate);   
+        
+        }
+
+        
+         // check if user click on button and start game based on mode choosen
+        canvas.addEventListener('click', function(event){
+            const rectangle = canvas.getBoundingClientRect();
+            const positionmouseX = event.clientX - rectangle.left;
+            const positionmouseY = event.clientY - rectangle.top;
+
+            if (positionmouseX >= canvas.width /2 -halfButtonWidth && positionmouseX <= canvas.width / 2 + halfButtonWidth && 
+            positionmouseY >= positionButtonY - halfButtonHeight  && positionmouseY <= positionButtonY + halfButtonHeight){
+                currentGameState = gameState.NORMAL;
+                startGame('normal');
+            }
+
+            else if (positionmouseX >= canvas.width /2 -halfButtonWidth && positionmouseX <= canvas.width / 2 + halfButtonWidth && 
+            positionmouseY >= positionButtonY + space - halfButtonHeight  && positionmouseY <= positionButtonY + space + halfButtonHeight){
+                currentGameState = gameState.NORMAL;
+                startGame('hard');
+            }
+
+        });
+
+        
+        obstaclesArray.forEach(obstacle => {
+            obstacle.scoreAwarded = false;
+        })
 
         // game loop
         function animate(timestamp){
@@ -420,75 +569,104 @@ async function loadImages(){
             lastTime = timestamp;
             context.clearRect(0, 0, canvas.width,canvas.height)
 
-            first_layer.update();
-            second_layer.update();
-            backgroundLayer.draw(context);
-            first_layer.draw(context);
-            second_layer.draw(context);
 
-            // update and draw player
-            if (player) {
-                player.update(deltaTime); 
-                player.draw(context);
-                drawScore(context); 
-            }
-            
-            // update and draw power-ups
-            powerUps.forEach(powerUp => {
-                powerUp.update();
-                powerUp.draw(context);
-                if (powerUpCollision(player, powerUp)) {
-                    console.log("Collision detected with power-up");  
-                    updateScore(powerUp.points);
-                    powerUp.collected = true;
-                }
+            switch (currentGameState){
+                case gameState.START:
+                    drawMenu();
+                    break;
 
-            });
-
-            let collisionDetected = false;
-
-            // update and draw obstacles
-            activeObstacles.forEach(obstacle => {
-                obstacle.update();
-                obstacle.draw(context);
-
-                if(obstacleCollision(player, obstacle)){
-                    collisionDetected = true;
-                    player.onCollision(lives);
-
-                }
-                    
+                case gameState.GAME_OVER:
+                    displayGameOver();
+                    break;
                 
-            });
+                default:
+            
+                    first_layer.update();
+                    second_layer.update();
+                    backgroundLayer.draw(context);
+                    first_layer.draw(context);
+                    second_layer.draw(context);
 
-            if (!collisionDetected && player.colliding) {
-                player.endCollision();
-            }
+                    // update and draw player
+                    if (player) {
+                        player.update(deltaTime); 
+                        player.draw(context);
+                        drawScore(context); 
+                    }
+                    
+                    // update and draw power-ups
+                    powerUps.forEach(powerUp => {
+                        powerUp.update();
+                        powerUp.draw(context);
+                        if (powerUpCollision(player, powerUp)) {
+                            console.log("Collision detected with power-up");  
+                            updateScore(powerUp.points);
+                            powerUp.collected = true;
+                        }
 
-            // Remove off-screen obtsacles and power-ups from active array
-            activeObstacles = activeObstacles.filter(obstacle => obstacle.location.x + obstacle.width > 0);
-            powerUps = powerUps.filter(powerUp => powerUp.location.x + powerUp.width > 0 && !powerUp.collected);
+                    });
 
-            // generate new power-up after time interval
-            lastPowerUpTime += deltaTime;
-            if (lastPowerUpTime > timeInterval) {
-                generatePowerUp();
-                lastPowerUpTime = 0;
-            }
+                    let collisionDetected = false;
 
-            // generate new obstacle after time interval
-            lastObstacleTime += deltaTime;
-            if (lastObstacleTime > obstacleTimeInterval) {
-                console.log('Attempting to generate a new obstacle.');
-                const newObstacle = generateObstacle();
-                activeObstacles.push(newObstacle);
-                console.log('New obstacle generated:', newObstacle);
-                lastObstacleTime = 0;
-                obstacleTimeInterval = getRandomInterval(1560,3000);
-            }
+                    // update and draw obstacles
+                    activeObstacles.forEach(obstacle => {
+                        obstacle.update();
+                        obstacle.draw(context);
 
-            lives.forEach(life => life.draw());
+                        // check if the player is jumping and has cleared obstacle to award obstacle point
+                        if (player.isJumping && player.location.x > obstacle.location.x + obstacle.width && !obstacle.scoreAwarded){
+                            updateScore(obstacle.points);
+                            obstacle.scoreAwarded = true;
+                        }
 
+                        if(obstacleCollision(player, obstacle)){
+                            collisionDetected = true;
+                            player.onCollision(lives);
+
+                        } 
+                    });
+
+
+                    if (!collisionDetected && player.colliding) {
+                        player.endCollision();
+                    }
+
+                    // Remove off-screen obtsacles and power-ups from active array
+                    activeObstacles = activeObstacles.filter(obstacle => obstacle.location.x + obstacle.width > 0);
+                    powerUps = powerUps.filter(powerUp => powerUp.location.x + powerUp.width > 0 && !powerUp.collected);
+
+
+                    // generate new power-up after time interval
+                    lastPowerUpTime += deltaTime;
+                    if (lastPowerUpTime > timeInterval) {
+                        generatePowerUp();
+                        lastPowerUpTime = 0;
+                    }
+
+
+                    // generate new obstacle after time interval
+                    lastObstacleTime += deltaTime;
+                    if (lastObstacleTime > obstacleTimeInterval) {
+                        console.log('Attempting to generate a new obstacle.');
+                        const newObstacle = generateObstacle();
+                        activeObstacles.push(newObstacle);
+                        console.log('New obstacle generated:', newObstacle);
+                        lastObstacleTime = 0;
+        
+                    }
+
+                    lives.forEach(life => life.draw());
+            
+                    
+                    // display game over screen after 3 seconds
+                    if (player.lives <= 0 && !player.game_over){
+                        player.gameOver();
+                        setTimeout(() => {
+                            currentGameState = gameState.GAME_OVER;
+                        }, 2000);
+                    }
+                
+            } 
 
             requestAnimationFrame(animate);
         }
@@ -517,6 +695,15 @@ canvas.addEventListener('mousedown', (event) => {
         player.jump();
     }
 });
+
+
+canvas.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter' && currentGameState === gameState.GAME_OVER) {
+        // Reset game state and start over
+        currentGameState = gameState.NORMAL; // Or whatever your initial game state is
+    }
+});
+
 
 
 
