@@ -266,6 +266,28 @@ class fixed_objects {
 
 }
 
+class spacecraft {
+    constructor(image, x, y, speed){
+        this.image = image;
+        this.location = {
+            x,
+            y,
+        };
+        this.speed = speed;
+        this.width = image.width;
+        this.height = image.height;
+        this.collected = false;
+    }
+
+    update(){
+        this.location.x -= this.speed;
+
+    }
+    draw(){
+        context.drawImage (this.image, this.location.x, this.location.y, this.width, this.height);
+    }
+}
+
 
 const backgroundLayer = new staticBackground(background_image);
 let lastTime = 0;
@@ -448,6 +470,7 @@ function drawMenu() {
     
 }
 
+
 // function to Display game over
 
 function displayGameOver() {
@@ -463,10 +486,7 @@ function displayGameOver() {
     context.font = 'bold 40px Montserrat';
     context.fillText('Your score is : ' + score, canvas.width / 2, canvas.height / 2 + 10);
 
-    context.font = 'italic 30px Montserrat'
-    context.fillText('Hit enter to play again', canvas.width / 2, canvas.height / 2 + 80);
 }
-
 
 
 
@@ -697,12 +717,7 @@ canvas.addEventListener('mousedown', (event) => {
 });
 
 
-canvas.addEventListener('keydown', function(event) {
-    if (event.key === 'Enter' && currentGameState === gameState.GAME_OVER) {
-        // Reset game state and start over
-        currentGameState = gameState.NORMAL; // Or whatever your initial game state is
-    }
-});
+
 
 
 

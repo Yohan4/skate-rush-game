@@ -390,7 +390,7 @@ button:hover{
 }
 
 .description-container .game-button,
-.explore-container .game-button{
+.explore-container .explore-button{
     grid-area: button;
 }
 
