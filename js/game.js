@@ -65,6 +65,7 @@ class Player {
         this.game_over = true;
         this.falling.currentFrame = 0;
     }
+
     
     update(deltaTime){
         deltaTime /= 1000;
@@ -276,11 +277,34 @@ class spacecraft {
         this.speed = speed;
         this.width = image.width;
         this.height = image.height;
-        this.collected = false;
     }
 
     update(){
         this.location.x -= this.speed;
+
+    }
+    draw(){
+        context.drawImage (this.image, this.location.x, this.location.y, this.width, this.height);
+    }
+}
+
+class bullet {
+    constructor(image, x, y, speed, yspeed){
+        this.image = image;
+        this.location = {
+            x,
+            y,
+        };
+        this.speed = speed;
+        this.yspeed = yspeed;
+        this.width = image.width;
+        this.height = image.height;
+        this.hit = false;
+    }
+
+    update(){
+        this.location.x -= this.speed;
+        this.location.y += this.yspeed;
 
     }
     draw(){
@@ -300,9 +324,14 @@ let activeObstacles = [];
 let score = 0;
 let lastPowerUpTime = 0;
 let lastObstacleTime = 0;
-let obstacleTimeInterval = getRandomInterval(1500, 3000);
-let timeInterval = 15000;
+let timeInterval = 12000;
 let gameOverTimeout;
+let lastSpaceCraftTime = 0;
+let SpaceCraftTimeInterval = 15000;
+let lastBulletTime = 0;
+let BulletTimeInterval = 15000;
+let scoreSaved = false;
+let obstacleTimeInterval;
 
 
 function updateScore(points){
@@ -396,6 +425,33 @@ function obstacleCollision(player, obstacle) {
 }
 
 
+function bulletCollision(player, bullet) {
+    const bulletCenterXStart = bullet.location.x + bullet.width / 4;
+    const bulletCenterXEnd = bullet.location.x + (bullet.width * 3 / 4);
+    const bulletCenterYStart = bullet.location.y + bullet.height / 4;
+    const bulletCenterYEnd = bullet.location.y + (bullet.height * 3 / 4);
+    
+    if (bullet.hit) {
+        return false;
+    }
+
+    if (
+        player.location.x < bulletCenterXEnd &&
+        player.location.x + player.width > bulletCenterXStart &&
+        player.location.y < bulletCenterYEnd &&
+        player.location.y + player.height > bulletCenterYStart
+    ) {
+        bullet.hasCollided = true;
+        return true;
+    }
+
+    return false;
+
+}
+
+
+
+
 
 const gameState = {
     START : 'start',
@@ -458,8 +514,8 @@ function drawMenu() {
     context.textBaseline = 'middle';
 
 
-    context.fillText('Normal mode', positionButtonX + buttonWidth / 2, normalButton + buttonHeight/2);
-    context.strokeText('Normal mode', positionButtonX + buttonWidth / 2, normalButton + buttonHeight/2);
+    context.fillText('Easy mode', positionButtonX + buttonWidth / 2, normalButton + buttonHeight/2);
+    context.strokeText('Easy mode', positionButtonX + buttonWidth / 2, normalButton + buttonHeight/2);
 
     context.fillText('Hard mode', positionButtonX + buttonWidth / 2, hardButton + buttonHeight/2);
     context.strokeText('Hard mode', positionButtonX + buttonWidth / 2, hardButton + buttonHeight/2);
@@ -474,7 +530,6 @@ function drawMenu() {
 }
 
 
-let scoreSaved = false;
 // function to Display game over
 
 function displayGameOver() {
@@ -490,6 +545,9 @@ function displayGameOver() {
 
     context.font = 'bold 40px Montserrat';
     context.fillText('Your score is : ' + score, canvas.width / 2, canvas.height / 2 + 10);
+
+    context.font = 'italic 30px Montserrat';
+    context.fillText('Press Enter to go back to Start Menu', canvas.width / 2, canvas.height / 2 + 100);
 
     if (!scoreSaved) {
         let loggedInUser = sessionStorage.getItem('loggedInUser');
@@ -525,6 +583,7 @@ function saveUserScore(username, newScore) {
     
 }
 
+// reset game
 function resetGame() {
     clearTimeout(gameOverTimeout);
 
@@ -548,19 +607,21 @@ function loadImage(src){
 
 async function loadImages(){
     try {
-        // Load Layer images
+        // Load Layer,player,heart, hard mode images
         const layer_one = await loadImage("../assets/images/lamp.png");
         const layer_two = await loadImage("../assets/images/road.png");
-
-        // Load Player images
         const skateboarding = await loadImage("../assets/images/skateboy_run.png");
         const jumping = await loadImage("../assets/images/skateboy_jump.png");
         const falling = await loadImage("../assets/images/skateboy_fall.png");
-
-
-        // Load Heart images
         heartImage =  await loadImage("../assets/images/heart.png");
         const lives = createLives(heartImage)
+
+        const alien = await loadImage("../assets/images/spacecraft.png");
+        const alienShip = new spacecraft(alien,canvas.width, 50, 0.8)
+
+        const missile = await loadImage("../assets/images/bullet.png");
+        const alienBullet = new bullet(missile,canvas.width +52, 95, 0.8, 0.3);
+        
         
         // Load and store power ups images in array
         powerUpArray = [
@@ -591,7 +652,7 @@ async function loadImages(){
 
         function startGame(difficulty){
             if (difficulty === 'normal'){
-                obstacleTimeInterval = getRandomInterval(1850,3500)
+                obstacleTimeInterval = getRandomInterval(1900,3500)
             } else if (difficulty === 'hard') {
                 obstacleTimeInterval = getRandomInterval(1650,2500)
             }
@@ -621,6 +682,142 @@ async function loadImages(){
 
         });
 
+        function hard_mode(deltaTime){
+            lastSpaceCraftTime += deltaTime;
+            if (lastSpaceCraftTime > SpaceCraftTimeInterval ){
+                alienShip.location.x = canvas.width;
+                lastSpaceCraftTime = 0;
+            }
+
+            if (alienShip.location.x + alienShip.width > 0){
+                alienShip.update();
+                alienShip.draw(context);
+            }
+
+            lastBulletTime += deltaTime;
+            if (lastBulletTime > BulletTimeInterval  ){
+                alienBullet.location.x = canvas.width + 52;
+                lastBulletTime = 0;
+            }
+
+            if (alienBullet.location.x +  alienBullet.width > 0){
+                alienBullet.update();
+                alienBullet.draw(context);
+
+                if (bulletCollision(player, alienBullet)) {
+                    console.log('Collision with bullet detected.');
+                    updateScore(-5);
+                    alienBullet.hit = true;
+                }
+
+                // Resetting the bullet collision flag when it moves a certain distance away or off-screen
+                if (alienBullet.location.x + alienBullet.width < 0 ) {
+                    alienBullet.hit = false;
+                }
+
+            } else {
+                alienBullet.location.y = 85;
+            }          
+        }
+ 
+        
+        // common functionalities for both hard mode and normal(default) mode
+        function common(deltaTime){
+            first_layer.update();
+            second_layer.update();
+            backgroundLayer.draw(context);
+            first_layer.draw(context);
+            second_layer.draw(context);
+
+            // update and draw player
+            if (player) {
+                player.update(deltaTime); 
+                player.draw(context);
+                drawScore(context); 
+            }
+            
+            // update and draw power-ups
+            powerUps.forEach(powerUp => {
+                powerUp.update();
+                powerUp.draw(context);
+                if (powerUpCollision(player, powerUp)) {
+                    console.log("Collision detected with power-up");  
+                    updateScore(powerUp.points);
+                    powerUp.collected = true;
+                }
+
+            });
+
+            let collisionDetected = false;
+
+            // update and draw obstacles
+            activeObstacles.forEach(obstacle => {
+                obstacle.update();
+                obstacle.draw(context);
+
+                // check if the player is jumping and has cleared obstacle to award obstacle point
+                if (player.isJumping && player.location.x > obstacle.location.x + obstacle.width && !obstacle.scoreAwarded){
+                    updateScore(obstacle.points);
+                    obstacle.scoreAwarded = true;
+                }
+
+                if(obstacleCollision(player, obstacle)){
+                    collisionDetected = true;
+                    player.onCollision(lives);
+
+                } 
+            });
+
+
+            if (!collisionDetected && player.colliding) {
+                player.endCollision();
+            }
+
+            // Remove off-screen obtsacles and power-ups from active array
+            activeObstacles = activeObstacles.filter(obstacle => obstacle.location.x + obstacle.width > 0);
+            powerUps = powerUps.filter(powerUp => powerUp.location.x + powerUp.width > 0 && !powerUp.collected);
+
+
+            // generate new power-up after time interval
+            lastPowerUpTime += deltaTime;
+            if (lastPowerUpTime > timeInterval) {
+                generatePowerUp();
+                lastPowerUpTime = 0;
+            }
+
+
+            // generate new obstacle after time interval
+            lastObstacleTime += deltaTime;
+            if (lastObstacleTime > obstacleTimeInterval) {
+                console.log('Attempting to generate a new obstacle.');
+                const newObstacle = generateObstacle();
+                activeObstacles.push(newObstacle);
+                console.log('New obstacle generated:', newObstacle);
+                lastObstacleTime = 0;
+
+            }
+
+            lives.forEach(life => life.draw());
+            
+            if (currentGameState === gameState.HARD){
+                hard_mode(deltaTime);
+            }
+    
+            
+            // display game over screen after 3 seconds
+            if (player.lives <= 0 && !player.game_over){
+                player.gameOver();
+                cancelAnimationFrame(loop);
+                gameOverTimeout = setTimeout(() => {
+                    currentGameState = gameState.GAME_OVER;
+                    if (!scoreSaved){
+                        displayGameOver();
+                    }
+                }, 2000);
+            }
+
+        }
+
         
         obstaclesArray.forEach(obstacle => {
             obstacle.scoreAwarded = false;
@@ -641,109 +838,19 @@ async function loadImages(){
                 case gameState.GAME_OVER:
                     displayGameOver();
                     break;
+
+                case gameState.HARD:
+                    common(deltaTime);
                 
-                default:
-            
-                    first_layer.update();
-                    second_layer.update();
-                    backgroundLayer.draw(context);
-                    first_layer.draw(context);
-                    second_layer.draw(context);
+                default: 
+                    common(deltaTime);
 
-                    // update and draw player
-                    if (player) {
-                        player.update(deltaTime); 
-                        player.draw(context);
-                        drawScore(context); 
-                    }
-                    
-                    // update and draw power-ups
-                    powerUps.forEach(powerUp => {
-                        powerUp.update();
-                        powerUp.draw(context);
-                        if (powerUpCollision(player, powerUp)) {
-                            console.log("Collision detected with power-up");  
-                            updateScore(powerUp.points);
-                            powerUp.collected = true;
-                        }
-
-                    });
-
-                    let collisionDetected = false;
-
-                    // update and draw obstacles
-                    activeObstacles.forEach(obstacle => {
-                        obstacle.update();
-                        obstacle.draw(context);
-
-                        // check if the player is jumping and has cleared obstacle to award obstacle point
-                        if (player.isJumping && player.location.x > obstacle.location.x + obstacle.width && !obstacle.scoreAwarded){
-                            updateScore(obstacle.points);
-                            obstacle.scoreAwarded = true;
-                        }
-
-                        if(obstacleCollision(player, obstacle)){
-                            collisionDetected = true;
-                            player.onCollision(lives);
-
-                        } 
-                    });
-
-
-                    if (!collisionDetected && player.colliding) {
-                        player.endCollision();
-                    }
-
-                    // Remove off-screen obtsacles and power-ups from active array
-                    activeObstacles = activeObstacles.filter(obstacle => obstacle.location.x + obstacle.width > 0);
-                    powerUps = powerUps.filter(powerUp => powerUp.location.x + powerUp.width > 0 && !powerUp.collected);
-
-
-                    // generate new power-up after time interval
-                    lastPowerUpTime += deltaTime;
-                    if (lastPowerUpTime > timeInterval) {
-                        generatePowerUp();
-                        lastPowerUpTime = 0;
-                    }
-
-
-                    // generate new obstacle after time interval
-                    lastObstacleTime += deltaTime;
-                    if (lastObstacleTime > obstacleTimeInterval) {
-                        console.log('Attempting to generate a new obstacle.');
-                        const newObstacle = generateObstacle();
-                        activeObstacles.push(newObstacle);
-                        console.log('New obstacle generated:', newObstacle);
-                        lastObstacleTime = 0;
-        
-                    }
-
-                    lives.forEach(life => life.draw());
-            
-                    
-                    // display game over screen after 3 seconds
-                    if (player.lives <= 0 && !player.game_over){
-                        player.gameOver();
-                        cancelAnimationFrame(loop);
-                        gameOverTimeout = setTimeout(() => {
-                            currentGameState = gameState.GAME_OVER;
-                            if (!scoreSaved) { // Check the flag before calling displayGameOver
-                                displayGameOver();
-                            }
-                        }, 2000);
-                    }
-
-                    // if (currentGameState !== gameState.GAME_OVER) {
-                    //     loop = requestAnimationFrame(animate); // Only request a new frame if the game is not over
-                    // }
-                
             } 
 
-            if (currentGameState !== gameState.GAME_OVER) {
-                loop = requestAnimationFrame(animate); // Only request a new frame if the game is not over
+            if (currentGameState !== gameState.GAME_OVER){
+                loop = requestAnimationFrame(animate);
             }
 
-            // loop = requestAnimationFrame(animate);
         }
 
         animate(0);
@@ -764,6 +871,7 @@ window.addEventListener('keydown', (event) => {
     }
 });
 
+// Detect when enter key is pressed
 window.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
         event.preventDefault();

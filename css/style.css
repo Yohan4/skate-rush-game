@@ -830,15 +830,15 @@ tr:hover{
 }
 
 #mode-images{
-    display: flex;
     margin-top: -40px;
     width: 60%;
+    margin-left: 33%;
 }
 
 #mode-images-two{
-    display: flex;
     margin-top: -120px;
     width: 50%;
+    margin-left: 23%;
 }
 
 #mode-images img{
@@ -856,8 +856,6 @@ tr:hover{
 /* ===BEGIN_game.html styles=== */
 
 #game{
-    /* width: 100%;
-    height: 90vh; */
     background: rgba(0, 0, 0, 1);
     margin-top:13%;
     border-radius: 15px;
@@ -865,20 +863,7 @@ tr:hover{
 }
 
 
-/* .game h1{
-    font-family: var(--font-family);
-    font-size: 40px;
-    font-style: normal;
-    font-weight: bold;
-    line-height: normal;
-    background: var(--title);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-stroke: 0.1em transparent;
-    background-clip: text;
-    text-transform: uppercase;
-    margin-left: 40%;
-} */
+
 
 /* ===END_game.html styles=== */
    
