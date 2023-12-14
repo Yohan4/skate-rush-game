@@ -615,7 +615,7 @@ async function loadImages(){
 
             else if (positionmouseX >= canvas.width /2 -halfButtonWidth && positionmouseX <= canvas.width / 2 + halfButtonWidth && 
             positionmouseY >= positionButtonY + space - halfButtonHeight  && positionmouseY <= positionButtonY + space + halfButtonHeight){
-                currentGameState = gameState.NORMAL;
+                currentGameState = gameState.HARD;
                 startGame('hard');
             }
 

@@ -680,7 +680,7 @@ footer{
     scroll-behavior: smooth;
     scrollbar-color: #0A4D68; 
     width:70%;
-    max-height: 750px;
+    max-height: 440px;
 }
 
 .table-container img{
@@ -712,8 +712,9 @@ table{
     margin-top: 0px;
 }
 
-th, 
-td{
+th,
+td,
+tbody{
     color:#00FFCA;
     text-align: center;
     font-family: var(--font-family);

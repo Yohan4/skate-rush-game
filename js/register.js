@@ -195,6 +195,7 @@ const validateRegisterForm = (event) => {
         users.push(newUserData);
         localStorage.setItem('users',JSON.stringify(users));
         sessionStorage.setItem('isLoggedIn', 'true');
+        sessionStorage.setItem('loggedInUser', usernameValue);
 
         alert("Registration sucessful!");
         window.location.href= '../index.html';
