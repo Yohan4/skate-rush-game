@@ -732,10 +732,18 @@ async function loadImages(){
                             }
                         }, 2000);
                     }
+
+                    // if (currentGameState !== gameState.GAME_OVER) {
+                    //     loop = requestAnimationFrame(animate); // Only request a new frame if the game is not over
+                    // }
                 
             } 
 
-            loop = requestAnimationFrame(animate);
+            if (currentGameState !== gameState.GAME_OVER) {
+                loop = requestAnimationFrame(animate); // Only request a new frame if the game is not over
+            }
+
+            // loop = requestAnimationFrame(animate);
         }
 
         animate(0);
