@@ -302,6 +302,8 @@ let lastPowerUpTime = 0;
 let lastObstacleTime = 0;
 let obstacleTimeInterval = getRandomInterval(1500, 3000);
 let timeInterval = 15000;
+let gameOverTimeout;
+
 
 function updateScore(points){
     score += points;
@@ -523,7 +525,13 @@ function saveUserScore(username, newScore) {
     
 }
 
+function resetGame() {
+    clearTimeout(gameOverTimeout);
 
+    currentGameState = gameState.START;
+    scoreSaved = false;
+    location.reload()
+}
 
 
 function loadImage(src){
@@ -560,18 +568,17 @@ async function loadImages(){
             { image: await loadImage("../assets/images/100_points.png"), points:100 },
             { image: await loadImage("../assets/images/120_points.png"), points:120 },
             { image: await loadImage("../assets/images/125_points.png"), points:125 },
-            { image: await loadImage("../assets/images/special_power.png"), points:1 }
         ];
 
         // Load and store obstacles images in array
         obstaclesArray = [
             { image: await loadImage("../assets/images/barrier.png"), points:3, y: 570 },
-            { image: await loadImage("../assets/images/bear.png"), points:8, y: 490 },
-            { image: await loadImage("../assets/images/big_wheel.png"), points:6, y: 520 },
-            { image: await loadImage("../assets/images/cat.png"), points:3 , y: 530 },
-            { image: await loadImage("../assets/images/cats.png"), points:5, y: 520  },
-            { image: await loadImage("../assets/images/cones.png"), points:3, y: 560  },
-            { image: await loadImage("../assets/images/small_wheel.png"), points:2, y: 560 }
+            { image: await loadImage("../assets/images/bear.png"), points:10, y: 490 },
+            { image: await loadImage("../assets/images/big_wheel.png"), points:10, y: 520 },
+            { image: await loadImage("../assets/images/cat.png"), points:2 , y: 530 },
+            { image: await loadImage("../assets/images/cats.png"), points:8, y: 520  },
+            { image: await loadImage("../assets/images/cones.png"), points:5, y: 560  },
+            { image: await loadImage("../assets/images/small_wheel.png"), points:4, y: 560 }
 
         ];
 
@@ -717,7 +724,8 @@ async function loadImages(){
                     // display game over screen after 3 seconds
                     if (player.lives <= 0 && !player.game_over){
                         player.gameOver();
-                        setTimeout(() => {
+                        cancelAnimationFrame(loop);
+                        gameOverTimeout = setTimeout(() => {
                             currentGameState = gameState.GAME_OVER;
                             if (!scoreSaved) { // Check the flag before calling displayGameOver
                                 displayGameOver();
@@ -727,7 +735,7 @@ async function loadImages(){
                 
             } 
 
-            requestAnimationFrame(animate);
+            loop = requestAnimationFrame(animate);
         }
 
         animate(0);
@@ -747,6 +755,14 @@ window.addEventListener('keydown', (event) => {
         player.jump();
     }
 });
+
+window.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        resetGame();
+    }
+});
+
 
 
 
