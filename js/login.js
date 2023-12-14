@@ -72,12 +72,15 @@ const validateLoginForm = (event) => {
 
             if (!userExists || userExists.password !== passwordValue){
                 alert("Validation failed! Incorrect username or password");
+                sessionStorage.setItem('isLoggedIn', 'false');
                 return false;
+            } else{
+                sessionStorage.setItem('isLoggedIn', 'true');
+                sessionStorage.setItem('loggedInUser', usernameValue);
+                alert("Login sucessful!");
+                window.location.href= '../index.html';
             }
 
-            sessionStorage.setItem('isLoggedIn', 'true');
-            alert("Login sucessful!");
-            window.location.href= '../index.html';
         }else {
             if (!usernameValue){
                 document.getElementById("usernameMessage").textContent = "Username cannot be empty";

@@ -15,6 +15,7 @@ const LoginLogoutButton = () => {
 // function for logout
 const logout = () =>{
     sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('loggedInUser');
     window.location.href = '../index.html'
 }
 

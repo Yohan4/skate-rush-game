@@ -665,13 +665,22 @@ footer{
     flex-direction: column;
     align-items: center;
     width:70%;
-    height:auto;
+    max-height: 750px;
     margin: auto;
     margin-top: 168px;
     background: rgba(0, 0, 0, 0.7);
     padding-bottom: 100px;
     border-radius: 15px;
     box-shadow: 0 0 6px 6px #00FFCA; 
+   
+}
+
+.second-container{
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    scrollbar-color: #0A4D68; 
+    width:70%;
+    max-height: 750px;
 }
 
 .table-container img{
@@ -698,7 +707,7 @@ table{
     overflow-x: auto;
     border-collapse: separate; 
     border-spacing: 0px 7px;
-    width:90%;
+    width:98%;
     text-align: center;
     margin-top: 0px;
 }

@@ -394,6 +394,7 @@ function obstacleCollision(player, obstacle) {
 }
 
 
+
 const gameState = {
     START : 'start',
     NORMAL : 'normal',
@@ -471,9 +472,11 @@ function drawMenu() {
 }
 
 
+let scoreSaved = false;
 // function to Display game over
 
 function displayGameOver() {
+    console.log('displayGameOver called');
     context.fillStyle = 'black'
     context.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -486,7 +489,40 @@ function displayGameOver() {
     context.font = 'bold 40px Montserrat';
     context.fillText('Your score is : ' + score, canvas.width / 2, canvas.height / 2 + 10);
 
+    if (!scoreSaved) {
+        let loggedInUser = sessionStorage.getItem('loggedInUser');
+        if (loggedInUser) {
+            saveUserScore(loggedInUser, score);
+            scoreSaved = true; // Set the flag after saving
+        }
+    }
+
 }
+
+
+// Function to update the user's score array
+function saveUserScore(username, newScore) {
+    console.log('saveUserScore called with', username, newScore);
+    // Retrieve the users array from localStorage
+    let users = JSON.parse(localStorage.getItem('users'));
+
+    // Find the user object
+    let userIndex = users.findIndex(u => u.username === username);
+    
+    // If the user exists, update their scores
+    if (userIndex !== -1) {
+        if (!users[userIndex].scores) {
+            users[userIndex].scores = []; // Initialize scores array if it doesn't exist
+        }
+        // Add the new score to the scores array
+        users[userIndex].scores.push(newScore);
+        // Save the updated users array back to localStorage
+        localStorage.setItem('users', JSON.stringify(users));
+    }
+
+    
+}
+
 
 
 
@@ -683,6 +719,9 @@ async function loadImages(){
                         player.gameOver();
                         setTimeout(() => {
                             currentGameState = gameState.GAME_OVER;
+                            if (!scoreSaved) { // Check the flag before calling displayGameOver
+                                displayGameOver();
+                            }
                         }, 2000);
                     }
                 
@@ -699,6 +738,7 @@ async function loadImages(){
 
 loadImages();
 
+
 // Detect when spacebar is clicked
 
 window.addEventListener('keydown', (event) => {
@@ -708,13 +748,7 @@ window.addEventListener('keydown', (event) => {
     }
 });
 
-// Detect when left mouse is clicked on canvas only
 
-canvas.addEventListener('mousedown', (event) => {
-    if (event.button === 0 && player) {
-        player.jump();
-    }
-});
 
 
 
