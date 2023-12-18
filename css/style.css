@@ -611,6 +611,7 @@ footer{
 #usernameMessage,
 #emailMessage,
 #passwordMessage, 
+#changePasswordMessage,
 #dateMessage,
 #genderMessage{
     font-family: var(--font-family);

@@ -553,7 +553,7 @@ function displayGameOver() {
         let loggedInUser = sessionStorage.getItem('loggedInUser');
         if (loggedInUser) {
             saveUserScore(loggedInUser, score);
-            scoreSaved = true; // Set the flag after saving
+            scoreSaved = true; 
         }
     }
 
@@ -563,24 +563,16 @@ function displayGameOver() {
 // Function to update the user's score array
 function saveUserScore(username, newScore) {
     console.log('saveUserScore called with', username, newScore);
-    // Retrieve the users array from localStorage
     let users = JSON.parse(localStorage.getItem('users'));
 
-    // Find the user object
     let userIndex = users.findIndex(u => u.username === username);
-    
-    // If the user exists, update their scores
     if (userIndex !== -1) {
         if (!users[userIndex].scores) {
-            users[userIndex].scores = []; // Initialize scores array if it doesn't exist
+            users[userIndex].scores = []; 
         }
-        // Add the new score to the scores array
         users[userIndex].scores.push(newScore);
-        // Save the updated users array back to localStorage
         localStorage.setItem('users', JSON.stringify(users));
-    }
-
-    
+    }    
 }
 
 // reset game

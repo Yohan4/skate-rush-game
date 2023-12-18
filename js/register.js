@@ -46,7 +46,7 @@ const usernameValidation = (usernameValue) => {
     }  else if(usernameValue.length < 6) {
         return "Username must at least be 6 characters long"
     }  else if(!regex.test(usernameValue)){
-        return "Username can only have undescore, digits & minimum of 3 alphabets"
+        return "Username can only have underscore, digits & minimum of 3 alphabets"
     }  else {
         // check if username already exists in the users array in local storage
         let users = JSON.parse(localStorage.getItem('users')) || [];
@@ -130,11 +130,12 @@ date.addEventListener("input", () => {
 const dateValidation = (dateValue) => {
     const dateinput = new Date(dateValue);
     const today_date = new Date();
+    const tenYearsBefore = new Date(today_date.getFullYear() - 10, 0, 1);
 
     if(dateValue.length === 0){
         return "Date of birth cannot be empty"
-    }else if (dateinput > today_date){
-        return "Date of birth must be in the past"
+    }else if (dateinput > tenYearsBefore){
+        return "You must be at least 10 years old before January 1st this year"
     }
     return null;
 };
@@ -218,3 +219,4 @@ const validateRegisterForm = (event) => {
         }
     }
 }         
+

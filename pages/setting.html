@@ -33,7 +33,7 @@
 
     <div class="wrapper">
         <!-- Change password form container -->
-        <form id="form">
+        <form id="form" onsubmit="validateChangePasswordForm(event)">
             <p> Change Password</p>
             <label class="label-one">
                 <div class="label-items">
@@ -54,10 +54,10 @@
                     <img src="../assets/images/change-password.svg" alt="-change-password-logo"/>
                     <input id=changePassword class="input" type="text" placeholder="Change Password" required> 
                 </div>
-                <div id="passwordMessage"></div>
+                <div id="changePasswordMessage"></div>
             </label>
             <p class="strong-password">Use 8 or more characters with a mix of letters, numbers and symbol !</p>
-            <button class="save">save</button>
+            <button type="submit" class="save">save</button>
         </form>
     </div>
     
@@ -92,4 +92,5 @@
     </footer>
 </body>
 <script src="../js/button.js"></script>
+<script src="../js/setting.js"></script>
 </html>
